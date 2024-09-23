@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model Rol {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  state      Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User[]
+}
+
+
+model User {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  password    String
+  name        String
+  lastname    String
+  phone       String
+  img         String?    
+
+  emailVeri   Boolean   @default(false)
+  state       Boolean   @default(true)
+
+  url         Url[]
+  rolName     String    @default("user")
+  rol         Rol       @relation(fields: [rolName], references: [name])
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Url {
+  id            Int       @id @default(autoincrement())
+  url_short     String    @unique
+  url_original  String
+  option        Boolean   @default(true)
+  password      String?
+
+  state         Boolean   @default(true)
+
+  userId        Int?       
+  user          User?     @relation(fields: [userId], references: [id])
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum LevelLog {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  level     LevelLog 
+  message   String  
+  origin    String   
+  userid    Int?
+  date      DateTime @default(now())
+}

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Url" ADD COLUMN "option" BOOLEAN NOT NULL DEFAULT true;
