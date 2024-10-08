@@ -10,10 +10,18 @@ export class RolDatasourcesImp implements RolDatasource {
         return !!rol;
     }
     async getAll(dtos:PaginateDtos): Promise<PaginateResponse<RolEntity>> {
-        const skip = (dtos.page - 1) * dtos.lim;
+        const query: any = {};
+        if (dtos.page > 0) {
+            const skip = (dtos.page - 1) * dtos.lim;
+            query.skip = skip;
+            query.take = dtos.lim;
+
+        } else {
+            query.skip = 0 ;
+        }
         const [total, roles] = await Promise.all([
             prisma.rol.count(),
-            prisma.rol.findMany({skip, take: dtos.lim}),
+            prisma.rol.findMany(query),
         ]);
 
         const next = ( dtos.page < Math.ceil(total / dtos.lim)) ? `/user?page=${(dtos.page + 1)}&lim=${dtos.lim}` : null;

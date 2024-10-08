@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { bcryptjsAdapter } from "../../../config";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { CreateUser, CreateUserDtos, DeleteUser, 
-    GetAllUser, GetByIdUser, UpdateProfile, UpdateProfileDtos, UpdateUser, UpdateUserDtos, 
+    GetAllUser, GetByIdUser, UpdatePassword, UpdatePasswordDtos, UpdateProfile, UpdateProfileDtos, UpdateUser, UpdateUserDtos, 
     UserRepository } from '../../';
 import { SearchUser } from "../../Domain/UseCase/searchUser.usecase";
 
@@ -51,7 +51,7 @@ export class UserController {
         if (error) return res.json({Status:false, error});
         
         const password = bcryptjsAdapter.hash(createUserDtos!.password);
-
+        
         new CreateUser(this.userRepository)
         .execute({...createUserDtos!, password})
         .then(Status => res.json({Status}))
@@ -73,12 +73,29 @@ export class UserController {
         const id = +req.params.id;
         const [ error, updateUserDtos ] = UpdateUserDtos.create({...req.body, id});
         if (error) return res.json({Status:false, error});
-        
+
+        if (updateUserDtos!.password) {
+            const password = bcryptjsAdapter.hash(updateUserDtos!.password);
+            updateUserDtos!.password= password;
+        }
+
         new UpdateUser(this.userRepository)
         .execute(updateUserDtos!)
         .then(Status => res.json({Status}))
         .catch(error=> res.json({Status:false, error}));
     }
+
+    public putUserPassword = async (req:Request, res:Response) =>  {
+        const id = +req.params.id;
+        const [ error, updatePasswordDtos ] = UpdatePasswordDtos.create({...req.body, id});
+        if (error) return res.json({Status:false, error});
+
+        new UpdatePassword (this.userRepository)
+        .execute(updatePasswordDtos!)
+        .then(Status => res.json({Status}))
+        .catch(error=> res.json({Status:false, error}));
+    }
+
 
     public deleteUser = async (req:Request, res:Response) =>  {
         const id = +req.params.id;

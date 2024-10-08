@@ -14,8 +14,7 @@ export class AuthMiddleware {
             try {
                 const payload = await jwtAdapter.validatetetJWT<{id:number}>(token);
                 if (!payload) return res.status(401).json({error: 'Invalid token'});
-    
-               const resp = await new GetByIdUser(this.userRepository).execute(payload.id);
+                const resp = await this.userRepository.getId(payload.id)
                if (!resp) return res.status(401).json({error: 'Invalid token - user'});
     
                req.body.user =resp;
@@ -38,8 +37,8 @@ export class AuthMiddleware {
             const payload = await jwtAdapter.validatetetJWT<{id:number}>(token);
             if (!payload) return res.status(401).json({error: 'Invalid token'});
 
-           const resp = await new GetByIdUser(this.userRepository).execute(payload.id);
-           if (!resp) return res.status(401).json({error: 'Invalid token - user'});
+            const resp = await this.userRepository.getId(payload.id)
+            if (!resp) return res.status(401).json({error: 'Invalid token - user'});
 
            req.body.user =resp;
 

@@ -22,7 +22,6 @@ model Rol {
   user       User[]
 }
 
-
 model User {
   id          Int      @id @default(autoincrement())
   email       String   @unique
@@ -34,8 +33,7 @@ model User {
 
   emailVeri   Boolean   @default(false)
   state       Boolean   @default(true)
-
-  url         Url[]
+  
   rolName     String    @default("user")
   rol         Rol       @relation(fields: [rolName], references: [name])
 
@@ -43,20 +41,17 @@ model User {
   updatedAt   DateTime   @updatedAt
 }
 
-model Url {
-  id            Int       @id @default(autoincrement())
-  url_short     String    @unique
-  url_original  String
-  option        Boolean   @default(true)
-  password      String?
-
-  state         Boolean   @default(true)
-
-  userId        Int?       
-  user          User?     @relation(fields: [userId], references: [id])
-
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+model Suppliers {
+  id          Int      @id @default(autoincrement())
+  repre       String   
+  ruc         String
+  email       String   @unique
+  address     String
+  phone       String
+  state       Boolean   @default(true)
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 enum LevelLog {

@@ -8,7 +8,7 @@ export class UpdateUserDtos {
         public readonly lastname:string,
         public readonly phone:string,
         public readonly email?:string,
-        public readonly password?:string, 
+        public password?:string, 
         public readonly rolName?:string,
     ){}
 
@@ -16,10 +16,10 @@ export class UpdateUserDtos {
         const returnObj: {[key:string]: any}={}
         if (this.email) returnObj.email=this.email;
         if (this.name) returnObj.name=this.name;
-        if (this.lastname) returnObj.rolId=this.lastname;
-        if (this.phone) returnObj.rolId=this.phone;
+        if (this.lastname) returnObj.lastname=this.lastname;
+        if (this.phone) returnObj.phone=this.phone;
         if (this.password) returnObj.password=this.password;
-        if (this.rolName) returnObj.rolId=this.rolName;
+        if (this.rolName) returnObj.rolName=this.rolName;
         return returnObj;
     }
 
@@ -27,11 +27,9 @@ export class UpdateUserDtos {
         const {id, email, name, lastname, phone, password, rolName} = props;
 
         if (!id || isNaN(Number(id))) return ['id must be a valid number']
-        if (regularExps.email.test(email)) return ['Email is not valid'];
+        if (email && !regularExps.email.test(email)) return ['Email is not valid'];
         if (!name) ['Missing name'];
-        if (!rolName) ['Missing rol'];
-        if (!password) ['Missing password'];
-        if (password.length < 6) return ['Password to short'];
+        if (password && password.length < 6) return ['Password to short'];
         if (!lastname) return ['Missing last name'];
         if (!phone) return['Missing phone'];
         return [undefined, new UpdateUserDtos(id, name, lastname, phone, email, password, rolName)]

@@ -14,6 +14,7 @@ export class UserRoutes {
         router.get('/search/:id', userController.getIdUser);
 
         router.put('/profile/:id', userController.putProfile);
+        router.put('/password/:id', userController.putUserPassword);
         router.post('/create', userController.postUser);
         router.put('/update/:id', userController.putUser);
         router.delete('/delete/:id', userController.deleteUser);

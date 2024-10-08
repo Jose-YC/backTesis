@@ -1,6 +1,6 @@
+import { ProveedorEntity } from "../../Proveedor/Domain";
 import { RolEntity } from "../../Rol";
 import { PaginateDtos } from "../../shared/domain/dto/pagination.dtos";
-import { URLEntity } from "../../Url";
 import { UserEntity } from "../../User";
 
 export interface PaginateResponse<T> {
@@ -14,12 +14,9 @@ export interface GetAllRolUseCase {
     execute(dtos:PaginateDtos):Promise<PaginateResponse<RolEntity>>
 }
 
-export interface GetAllURLUseCase {
-    execute(dtos:PaginateDtos):Promise<PaginateResponse<URLEntity>>
-}
 
-export interface GetAllIdURLUseCase {
-    execute(dtos:PaginateDtos):Promise<PaginateResponse<URLEntity>>
+export interface GetAllProveedorUseCase {
+    execute(dtos:PaginateDtos):Promise<PaginateResponse<ProveedorEntity>>
 }
 
 export interface GetAllUserUseCase {

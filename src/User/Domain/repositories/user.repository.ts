@@ -1,5 +1,5 @@
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
-import { UserEntity, UpdateUserDtos, CreateUserDtos, UpdateProfileDtos } from "../";
+import { UserEntity, UpdateUserDtos, CreateUserDtos, UpdateProfileDtos, UpdatePasswordDtos } from "../";
 import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
 
 export abstract class UserRepository {
@@ -10,5 +10,6 @@ export abstract class UserRepository {
     abstract getSearch(dtos:PaginateDtos):Promise<PaginateResponse<UserEntity>>;
     abstract getId(id:number):Promise<UserEntity>;
     abstract update(updateUser:UpdateUserDtos):Promise<Boolean>;
+    abstract updatePassword(updatePassword:UpdatePasswordDtos):Promise<Boolean>;
     abstract delete(id:number):Promise<Boolean>;
 }

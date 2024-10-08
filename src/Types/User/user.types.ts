@@ -1,4 +1,4 @@
-import { CreateUserDtos, UpdateProfileDtos, UpdateUserDtos, UserEntity } from "../../User";
+import { CreateUserDtos, UpdatePasswordDtos, UpdateProfileDtos, UpdateUserDtos, UserEntity } from "../../User";
 
 export interface UpdateUserUseCase {
     execute(dtos:UpdateUserDtos):Promise<Boolean>
@@ -6,6 +6,10 @@ export interface UpdateUserUseCase {
 
 export interface UpdateProfileUseCase {
     execute(dtos:UpdateProfileDtos):Promise<Boolean>
+}
+
+export interface UpdatePasswordUseCase {
+    execute(dtos:UpdatePasswordDtos):Promise<Boolean>
 }
 
 export interface CreateUserUseCase {

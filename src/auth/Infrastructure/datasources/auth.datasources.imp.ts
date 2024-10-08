@@ -28,7 +28,7 @@ export class AuthDatasourcesImp implements AuthDatasource {
 
         const validPasword = bcryptjsAdapter.compare(login.password, user.password);
         if (!validPasword) throw CustomError.badRequest('user or password incorrect - password');
-
+        
         const token = await jwtAdapter.generatetJWT<string>({id: user.id});
         if (!token) throw CustomError.internalServer('Error while creating JWT');
 
@@ -54,7 +54,6 @@ export class AuthDatasourcesImp implements AuthDatasource {
 
         const user = await prisma.user.create({data: {...register, password}});
         if (!user) throw CustomError.badRequest('user could not be saved');
-        console.log(user);
         const token = await jwtAdapter.generatetJWT<string>({id: user.id});
          if (!token) { throw CustomError.internalServer('Error while creating JWT')};
 

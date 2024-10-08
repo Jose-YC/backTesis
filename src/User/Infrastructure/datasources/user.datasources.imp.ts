@@ -1,7 +1,8 @@
-import { prisma } from "../../../Server";
+import { bcryptjsAdapter } from "../../../config";
+import { CustomError, prisma } from "../../../Server";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
-import { CreateUserDtos, UpdateProfileDtos, UpdateUserDtos, UserDatasource, UserEntity } from "../../Domain";
+import { CreateUserDtos, UpdatePasswordDtos, UpdateProfileDtos, UpdateUserDtos, UserDatasource, UserEntity } from "../../Domain";
 import { UpdatePhotoDtos } from "../../Domain/dtos/updatePhoto";
 
 export class UserDatasourcesImp implements UserDatasource {
@@ -63,7 +64,6 @@ export class UserDatasourcesImp implements UserDatasource {
     }
     async profile(updateProfileDtos:UpdateProfileDtos): Promise<Boolean> {
         await this.getId(updateProfileDtos.id);
-        console.log(updateProfileDtos!.values);
         const user = await prisma.user.update({where: {id: updateProfileDtos.id}, data: updateProfileDtos!.values})
         return !!user;
     }
@@ -76,4 +76,21 @@ export class UserDatasourcesImp implements UserDatasource {
         const user = await prisma.user.delete({where: {id}});
         return !!user;
     }
+
+    async updatePassword(updatePassword: UpdatePasswordDtos): Promise<Boolean> {    
+        const user = await prisma.user.findFirst({where:{id:updatePassword.id}});
+        if (!user) throw CustomError.badRequest('user incorrect');
+        
+        const validPasword = bcryptjsAdapter.compare(updatePassword!.oldPassword, user.password,);
+        if (!validPasword) throw CustomError.badRequest('password incorrect');
+
+        const password = bcryptjsAdapter.hash(updatePassword!.password);
+
+        const passwordNew = await prisma.user.update({
+            where: {id: updatePassword.id}, 
+            data: {password}
+        });
+
+        return !!passwordNew;
+    } 
 }

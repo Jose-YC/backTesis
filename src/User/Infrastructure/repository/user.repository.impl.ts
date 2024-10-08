@@ -1,6 +1,6 @@
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
-import { CreateUserDtos, UpdateProfileDtos, UpdateUserDtos, 
+import { CreateUserDtos, UpdatePasswordDtos, UpdateProfileDtos, UpdateUserDtos, 
          UserDatasource, UserEntity,
          UserRepository } from "../../Domain";
 
@@ -28,6 +28,9 @@ export class UserRepositoryImp implements UserRepository {
     }
     update(updateUser: UpdateUserDtos): Promise<Boolean> {
         return this.datasource.update(updateUser);
+    }
+    updatePassword(updatePassword: UpdatePasswordDtos): Promise<Boolean> {
+        return this.datasource.updatePassword(updatePassword);
     }
     delete(id: number): Promise<Boolean> {
         return this.datasource.delete(id);
