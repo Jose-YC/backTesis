@@ -13,10 +13,24 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
+model Client {
+  dni         String    @id @unique
+  name        String    
+  lastname    String
+  email       String   @unique
+  state       Boolean   @default(true)
+  
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  Venta Venta[]
+}
+
 model Rol {
   id         Int       @id @default(autoincrement())
   name       String    @unique
   state      Boolean   @default(true)
+  
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   user       User[]
@@ -35,12 +49,62 @@ model User {
   state       Boolean   @default(true)
   
   rolName     String    @default("user")
-  rol         Rol       @relation(fields: [rolName], references: [name])
+  rol         Rol       @relation(fields: [rolName], references: [name], onDelete: Cascade)
 
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+
+  Order Order[]
+  Venta Venta[]
 }
 
+model Category {
+  id                 Int      @id @default(autoincrement())
+  name               String   
+  description        String
+  parent_id          Int?     
+  parent             Category? @relation("Parent", fields: [parent_id], references: [id], onDelete: Cascade)
+  children           Category[] @relation("Parent")
+
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  ItemsCategory ItemsCategory[]
+}
+
+model Measures  {
+  id                 Int      @id @default(autoincrement())
+  name               String   
+  abbrev             String  
+
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  ItemsMeasures ItemsMeasures[]
+}
+model Product  {
+  id                 Int      @id @default(autoincrement())
+  name               String   
+  description        String   
+  base_priece        Float
+  state              Boolean   @default(true)
+
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  OrderItem         OrderItem[]
+  VentaItem         VentaItem[]
+  ItemsMeasures     ItemsMeasures[] 
+  ItemsCategory     ItemsCategory[]
+  ProductImage      ProductImage[]
+}
+model ProductImage {
+  id          Int    @id @default(autoincrement())
+  url         String
+  product_id  Int
+
+  product   Product @relation(fields: [product_id], references: [id])
+}
 model Suppliers {
   id          Int      @id @default(autoincrement())
   repre       String   
@@ -52,6 +116,95 @@ model Suppliers {
   
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+
+  Order Order[]
+}
+model ItemsMeasures {
+  id           Int @id @default(autoincrement())
+  measures_id   Int
+  product_id    Int
+  stock         Int
+  min_stock     Int
+  price         Float
+  
+  measures      Measures  @relation(fields: [measures_id], references: [id], onDelete: Cascade)
+  product       Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+}
+model ItemsCategory {
+  id            Int      @id @default(autoincrement())
+  category_id   Int
+  product_id    Int
+
+  category      Category  @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  product       Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+model Order {
+  id           Int    @id @default(autoincrement())
+  subTotal     Float
+  tax          Float
+  total        Float
+  itemsInOrder Int
+  user_id      Int
+  provedor_id  Int
+  state       Boolean   @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  user   User   @relation(fields: [user_id], references: [id])
+  proveedor  Suppliers @relation(fields: [provedor_id], references: [id])
+  OrderItem    OrderItem[]
+
+  transactionId String?
+}
+model OrderItem {
+  id       String @id @default(uuid())
+  quantity Int
+  price    Float
+  order_id Int
+  product_id Int
+  
+  // Relaciones
+  order   Order  @relation(fields: [order_id], references: [id])  
+  product   Product @relation(fields: [product_id], references: [id])
+}
+model Venta {
+  id           Int    @id @default(autoincrement())
+  subTotal     Float
+  tax          Float
+  total        Float
+  itemsInOrder Int
+  user_id      Int
+  client_id    String
+  state       Boolean   @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  user         User   @relation(fields: [user_id], references: [id])
+  client       Client @relation(fields: [client_id], references: [dni])
+  ventaItem    VentaItem[]
+
+  transactionId String?
+}
+model VentaItem {
+  id          String @id @default(uuid())
+  quantity    Int
+  price       Float
+  order_id    Int
+  product_id  Int
+
+  // Relaciones
+  venta   Venta  @relation(fields: [order_id], references: [id])
+  product   Product @relation(fields: [product_id], references: [id])
 }
 
 enum LevelLog {
@@ -59,7 +212,6 @@ enum LevelLog {
   MEDIUM
   HIGH
 }
-
 model Log {
   id        Int      @id @default(autoincrement())
   level     LevelLog 

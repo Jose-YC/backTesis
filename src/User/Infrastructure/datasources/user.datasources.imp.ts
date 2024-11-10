@@ -18,10 +18,7 @@ export class UserDatasourcesImp implements UserDatasource {
             prisma.user.findMany({skip, take:dtos.lim}),
         ]);
 
-        const next = ( dtos.page < Math.ceil(total / dtos.lim)) ? `/user?page=${(dtos.page + 1)}&lim=${dtos.lim}` : null;
-        const prev = (dtos.page-1 >= 0) ? `/user?page=${(dtos.page - 1)}&lim=${dtos.lim}` : null;
-
-        return {next, prev, total, data:user.map(user => UserEntity.fromObject(user))};
+        return {total, data:user.map(user => UserEntity.fromObject(user))};
     }
     async getSearch(dtos:PaginateDtos): Promise<PaginateResponse<UserEntity>> {
         const skip = (dtos.page - 1) * dtos.lim;
@@ -47,10 +44,7 @@ export class UserDatasourcesImp implements UserDatasource {
                 take:dtos.lim}),
         ]);
 
-        const next = ( dtos.page < Math.ceil(total / dtos.lim)) ? `/user?page=${(dtos.page + 1)}&lim=${dtos.lim}` : null;
-        const prev = (dtos.page-1 >= 0) ? `/user?page=${(dtos.page - 1)}&lim=${dtos.lim}` : null;
-
-        return {next, prev, total, data:user.map(user => UserEntity.fromObject(user))};
+        return {total, data:user.map(user => UserEntity.fromObject(user))};
     }
     async getId(id: number): Promise<UserEntity> {
         const user = await prisma.user.findFirst({where: { id }});

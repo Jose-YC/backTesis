@@ -24,10 +24,7 @@ export class RolDatasourcesImp implements RolDatasource {
             prisma.rol.findMany(query),
         ]);
 
-        const next = ( dtos.page < Math.ceil(total / dtos.lim)) ? `/user?page=${(dtos.page + 1)}&lim=${dtos.lim}` : null;
-        const prev = (dtos.page-1 >= 0) ? `/user?page=${(dtos.page - 1)}&lim=${dtos.lim}` : null;
-
-        return {next, prev, total, data:roles.map(rol => RolEntity.fromObject(rol))};
+        return { total, data:roles.map(rol => RolEntity.fromObject(rol))};
     }
     async getSearch(dtos:PaginateDtos): Promise<PaginateResponse<RolEntity>> {
         const skip = (dtos.page - 1) * dtos.lim;
@@ -42,11 +39,8 @@ export class RolDatasourcesImp implements RolDatasource {
                 skip, 
                 take:dtos.lim}),
         ]);
-
-        const next = ( dtos.page < Math.ceil(total / dtos.lim)) ? `/user?page=${(dtos.page + 1)}&lim=${dtos.lim}` : null;
-        const prev = (dtos.page-1 >= 0) ? `/user?page=${(dtos.page - 1)}&lim=${dtos.lim}` : null;
-
-        return {next, prev, total, data:roles.map(rol => RolEntity.fromObject(rol))};
+        
+        return {total, data:roles.map(rol => RolEntity.fromObject(rol))};
     }
     async getId(id: number): Promise<RolEntity> {
         const rol = await prisma.rol.findFirst({where: { id }});
