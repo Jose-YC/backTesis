@@ -6,8 +6,7 @@
     "dev": "tsnd --respawn --clear src/app.ts",
     "build": "rimraf ./dist && tsc",
     "start": "npm run build && node dist/app.js",
-    "seed": "ts-node src/seed/seed-database.ts",
-    "test": "artillery  src/test/product/getProduct.yml"
+    "seed": "ts-node src/seed/seed-database.ts"
   },
   "keywords": [],
   "author": "",

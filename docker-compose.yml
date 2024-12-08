@@ -1,15 +1,26 @@
-version: '3.8'
+version: '4'
 
 services:
-
-  postgres-db:
-    image: postgres:15.3
-    restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - ./postgres:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
+        tesis:
+            build:
+              context: ./
+              dockerfile: dockerfile
+              args:
+                - PRODUCTBD=${POSTGRES_URL}
+            image: tesis
+            ports:
+              - ${PORT}:${PORT}
+            environment:
+              - PORT=${PORT}
+              - PUBLIC_PATH=${PUBLIC_PATH}
+              - MAILER_SERVICE=${MAILER_SERVICE}
+              - MAILER_EMAIL=${MAILER_EMAIL}
+              - MAILER_KEY=${MAILER_KEY}
+              - POSTGRES_URL=${POSTGRES_URL}
+              - POSTGRES_USER=${POSTGRES_USER}
+              - POSTGRES_DB=${POSTGRES_DB}
+              - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+              - CLOUDINARY_URL=${CLOUDINARY_URL}
+              - WEBSERVICE_URL=${WEBSERVICE_URL}
+              - SECRET_JWT=${SECRET_JWT}
+              - NODE_ENV=${NODE_ENV}
