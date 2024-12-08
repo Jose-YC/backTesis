@@ -45,7 +45,7 @@ export class PDFPrinter {
     private printer = new PdfPrinter(fonts);
 
     generated(pdfDoc: TDocumentDefinitions, options: BufferOptions = { tableLayouts: customTableLayouts } ):PDFKit.PDFDocument{
-        
+        console.log(fonts)
         return this.printer.createPdfKitDocument(pdfDoc, options)
     }
   

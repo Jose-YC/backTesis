@@ -5,7 +5,6 @@ WORKDIR /app
 
 COPY package.json ./
 COPY package-lock.json ./
-COPY fonts/ /app/fonts/
 
 RUN npm install
 
@@ -23,6 +22,7 @@ COPY --from=deps /app/node_modules ./node_modules
 
 # Copiar todo el codigo fuente de la aplicación
 COPY . .
+COPY fonts /app/fonts
 
 RUN npx prisma migrate deploy
 RUN npx prisma generate
@@ -45,6 +45,7 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma ./prisma
 
+COPY --from=build /app/fonts ./fonts
 
 ENV NODE_ENV=production
 
