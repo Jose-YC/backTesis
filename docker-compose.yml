@@ -4,7 +4,7 @@ services:
         tesis:
             build:
               context: ./
-              dockerfile: dockerfile
+              dockerfile: Dockerfile
               args:
                 - PRODUCTBD=${POSTGRES_URL}
             image: tesis
