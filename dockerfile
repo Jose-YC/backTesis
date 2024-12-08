@@ -19,6 +19,7 @@ WORKDIR /app
 
 # Copiar de deps, los módulos de node
 COPY --from=deps /app/node_modules ./node_modules
+COPY fonts/ /app/fonts/
 
 # Copiar todo el codigo fuente de la aplicación
 COPY . .
