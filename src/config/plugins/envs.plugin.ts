@@ -7,6 +7,7 @@ export const envs = {
   SECRET_JWT: get('SECRET_JWT').required().asString(),
   NODE_ENV: get('NODE_ENV').required().asString(),
   WEBSERVICE_URL: get('WEBSERVICE_URL').required().asString(), 
+  CLOUDINARY_URL: get('CLOUDINARY_URL').required().asString(), 
   
   POSTGRES_URL: get('POSTGRES_URL').required().asString(),
   POSTGRES_USER: get('POSTGRES_USER').required().asString(),

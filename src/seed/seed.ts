@@ -1,5 +1,7 @@
 
+import { OrderStatus, ClientType, DocumentType, PaymentMethod  } from '@prisma/client';
 import bcryptjs from 'bcryptjs';
+
 
 export const initialData = {
     rol: [
@@ -11,6 +13,174 @@ export const initialData = {
         {name:'jefe almacen'},
         {name:'jefe ventas'},
     ],
+
+    clients: [
+        {
+            num_doc: '00000000',
+            type: ClientType.GENERAL,
+            name: 'GENERAL',
+        },
+        {
+            num_doc: '12345678',
+            type: ClientType.NATURAL,
+            name: 'Juan Perez',
+            email: 'juanperez235@example.com',
+            phone: '123456789',
+            address: 'Calle Falsa 123'
+        },
+        {
+          num_doc: '87654321',
+          type: ClientType.NATURAL,
+          name: 'Carlos Rodriguez',
+          email: 'carlosrodriguez325@example.com',
+          phone: '456789123',
+          address: 'Boulevard de los Sueños Rotos 789'
+        },
+        {
+          num_doc: '98765432',
+          type: ClientType.NATURAL,
+          name: 'Pedro Sanchez',
+          email: 'pedrosanchez57@example.com',
+          phone: '654123987',
+          address: 'Calle del Sol 654'
+        },
+        {
+          num_doc: '23456789',
+          type: ClientType.NATURAL,
+          name: 'Maria Lopez',
+          email: 'marialopez13@example.com',
+          phone: '987654321',
+          address: 'Av. Libertador 456'
+        },
+        {
+          num_doc: '34567890',
+          type: ClientType.NATURAL,
+          name: 'Luis Fernandez',
+          email: 'luisfernandez35@example.com',
+          phone: '321987654',
+          address: 'Calle de la Paz 321'
+        },
+        {
+          num_doc: '45678901',
+          type: ClientType.NATURAL,
+          name: 'Ana Torres',
+          email: 'anatorres23@example.com',
+          phone: '654321987',
+          address: 'Plaza de la Libertad 654'
+        },
+        {
+          num_doc: '56789012',
+          type: ClientType.NATURAL,
+          name: 'Jorge Ramirez',
+          email: 'jorgeramirez45@example.com',
+          phone: '987123456',
+          address: 'Av. San Martin 987'
+        },
+        {
+          num_doc: '67890123',
+          type: ClientType.NATURAL,
+          name: 'Sofia Castro',
+          email: 'sofiacastro23@example.com',
+          phone: '123456789',
+          address: 'Calle de la Esperanza 123'
+        },
+        {
+          num_doc: '78901234',
+          type: ClientType.NATURAL,
+          name: 'Diego Silva',
+          email: 'diegosilva02@example.com',
+          phone: '456789321',
+          address: 'Boulevard de los Sueños 456'
+        },
+        {
+          num_doc: '89012345',
+          type: ClientType.NATURAL,
+          name: 'Clara Medina',
+          email: 'clara_medina@example.com',
+          phone: '321654987',
+          address: 'Calle del Sol 321'
+        },
+        {
+          num_doc: '20123456789',
+          type: ClientType.JURIDICO,
+          name: 'Inversiones Gomez S.A.C.',
+          email: 'maria_gomez@example.com',
+          phone: '987654321',
+          address: 'Avenida Siempre Viva 456'
+        },
+        {
+          num_doc: '20456789123',
+          type: ClientType.JURIDICO,
+          name: 'Comercial Laura S.A.C.',
+          email: 'laura_martinez@example.com',
+          phone: '321987654',
+          address: 'Plaza de la Paz 321'
+        },
+        {
+          num_doc: '20123456790',
+          type: ClientType.JURIDICO,
+          name: 'Distribuciones Carlos S.A.C.',
+          email: 'carlos_rodriguez02@example.com',
+          phone: '456789123',
+          address: 'Boulevard de los Sueños Rotos 789'
+        },
+        {
+          num_doc: '20456789124',
+          type: ClientType.JURIDICO,
+          name: 'Servicios Pedro S.A.C.',
+          email: 'pedro_sanchez02@example.com',
+          phone: '654123987',
+          address: 'Calle del Sol 654'
+        },
+        {
+          num_doc: '20123456791',
+          type: ClientType.JURIDICO,
+          name: 'Construcciones Juan S.A.C.',
+          email: 'juan_perez@example.com',
+          phone: '123456789',
+          address: 'Calle Falsa 123'
+        },
+        {
+          num_doc: '20456789125',
+          type: ClientType.JURIDICO,
+          name: 'Tecnologia Sofia S.A.C.',
+          email: 'sofia_castro@example.com',
+          phone: '123456789',
+          address: 'Calle de la Esperanza 123'
+        },
+        {
+          num_doc: '20123456792',
+          type: ClientType.JURIDICO,
+          name: 'Alimentos Ana S.A.C.',
+          email: 'anatorres02@example.com',
+          phone: '654321987',
+          address: 'Plaza de la Libertad 654'
+        },
+        {
+          num_doc: '20456789126',
+          type: ClientType.JURIDICO,
+          name: 'Ropa Clara S.A.C.',
+          email: 'clara_medina02@example.com',
+          phone: '321654987',
+          address: 'Calle del Sol 321'
+        },
+        {
+          num_doc: '20123456793',
+          type: ClientType.JURIDICO,
+          name: 'Transporte Diego S.A.C.',
+          email: 'diego_silva@example.com',
+          phone: '456789321',
+          address: 'Boulevard de los Sueños 456'
+        },
+        {
+          num_doc: '20456789127',
+          type: ClientType.JURIDICO,
+          name: 'Salud Luis S.A.C.',
+          email: 'luis_fernandez@example.com',
+          phone: '321987654',
+          address: 'Calle de la Paz 321'
+        }
+      ],
 
     users: [
         {
@@ -382,10 +552,10 @@ export const initialData = {
             {
             name: 'Mens Raven Lightweight Zip Up Bomber Jacket',
             description: 'Introducing the Tesla Raven Collection. The Mens Raven Lightweight Zip Up Bomber has a premium, modern silhouette made from a sustainable bamboo cotton blend for versatility in any season. The hoodie features subtle thermoplastic polyurethane Tesla logos on the left chest and below the back collar, a concealed chest pocket with custom matte zipper pulls and a french terry interior. Made from 70% bamboo and 30% cotton.',
-              base_priece: 21,
-              ProductImage: [
-                'https://res.cloudinary.com/dbe4rxkkn/image/upload/v1731263738/Product/jyi1w1gsppbrzmboa9xk.webp',
-                'https://res.cloudinary.com/dbe4rxkkn/image/upload/v1731263739/Product/luei5iyifyxqmfhpy0cx.webp'
+            base_priece: 21,
+            ProductImage: [
+            'https://res.cloudinary.com/dbe4rxkkn/image/upload/v1731263738/Product/jyi1w1gsppbrzmboa9xk.webp',
+            'https://res.cloudinary.com/dbe4rxkkn/image/upload/v1731263739/Product/luei5iyifyxqmfhpy0cx.webp'
             ],
             ItemsMeasures: [
                 {
@@ -422,12 +592,11 @@ export const initialData = {
             {
             name: 'Mens Turbine Long Sleeve Tee',
             description: 'Introducing the Tesla Turbine Collection. Designed for style, comfort and everyday lifestyle, the Mens Turbine Long Sleeve Tee features a subtle, water-based T logo on the left chest and our Tesla wordmark below the back collar. The lightweight material is double-dyed, creating a soft, casual style for ideal wear in any season. Made from 50% cotton and 50% polyester.',
-              base_priece: 21,
-ProductImage: [
+            base_priece: 21,
+            ProductImage: [
                 'https://res.cloudinary.com/dbe4rxkkn/image/upload/v1731263700/Product/llb7uyqtndr3e2rxtx76.webp',
                 'https://res.cloudinary.com/dbe4rxkkn/image/upload/v1731263740/Product/kuiihbl7t2nvi14gjdgt.webp',
             ],
-            inStock: 50,
             ItemsMeasures: [
                 {
                     measures_id: 2,
@@ -1515,12 +1684,10 @@ ProductImage: [
             {
             description: 'Introducing the Tesla Turbine Collection. Designed for style, comfort and everyday lifestyle, the Womens Turbine Cropped Long Sleeve Tee features a subtle, water-based Tesla wordmark across the chest and our T logo below the back collar. The lightweight material is double-dyed, creating a soft, casual style with a cropped silhouette. Made from 50% cotton and 50%',
               base_priece: 21,
-ProductImage: [
+        ProductImage: [
                 'https://res.cloudinary.com/dbe4rxkkn/image/upload/v1731263741/Product/uujdp3ia4gnfcoqodlpv.webp',
                 'https://res.cloudinary.com/dbe4rxkkn/image/upload/v1731263743/Product/c4wx7vxfenacyopc9kww.webp',
             ],
-            inStock: 10,
-            price: 45,
             ItemsMeasures: [
                 {
                     measures_id: 2,
@@ -2332,6 +2499,550 @@ ProductImage: [
                 ],
             name: 'Kids Corp Jacket',
             },
-        ]
+        ],
+
+        orden: [
+            {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.PENDING,
+                provedor_id: 7,
+                itemsOrden: [
+                        {
+                            quantity: 1,
+                            price: 21,
+                            product_id: 1,
+                            mesures_id: 2,
+                        },
+                        {
+                            quantity: 1,
+                            price: 25,
+                            product_id: 1,
+                            mesures_id: 3,
+                        }
+                    ],
+            },
+            {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.PENDING,
+                provedor_id: 7,
+                itemsOrden: [
+                        {
+                            quantity: 1,
+                            price: 21,
+                            product_id: 2,
+                            mesures_id: 2,
+                        },
+                        {
+                            quantity: 1,
+                            price: 25,
+                            product_id: 2,
+                            mesures_id: 3,
+                        }
+                    ],
+            },
+            {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.PENDING,
+                provedor_id: 7,
+                itemsOrden: [
+                        {
+                            quantity: 1,
+                            price: 21,
+                            product_id: 3,
+                            mesures_id: 2,
+                        },
+                        {
+                            quantity: 1,
+                            price: 25,
+                            product_id: 4,
+                            mesures_id: 3,
+                        }
+                    ],
+            },
+            {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.DELIVERED,
+                provedor_id: 7,
+                itemsOrden: [
+                        {
+                            quantity: 1,
+                            price: 21,
+                            product_id: 5,
+                            mesures_id: 2,
+                        },
+                        {
+                            quantity: 1,
+                            price: 25,
+                            product_id: 6,
+                            mesures_id: 3,
+                        }
+                    ],
+            },
+            {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.DELIVERED,
+                provedor_id: 7,
+                itemsOrden: [
+                        {
+                            quantity: 1,
+                            price: 21,
+                            product_id: 7,
+                            mesures_id: 2,
+                        },
+                        {
+                            quantity: 1,
+                            price: 25,
+                            product_id: 7,
+                            mesures_id: 3,
+                        }
+                    ],
+            },
+            {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.CANCELLED,
+                provedor_id: 7,
+                itemsOrden: [
+                        {
+                            quantity: 1,
+                            price: 21,
+                            product_id: 8,
+                            mesures_id: 2,
+                        },
+                        {
+                            quantity: 1,
+                            price: 25,
+                            product_id: 3,
+                            mesures_id: 3,
+                        }
+                    ],
+            },
+            {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.CANCELLED,
+                provedor_id: 7,
+                itemsOrden: [
+                        {
+                            quantity: 1,
+                            price: 21,
+                            product_id: 1,
+                            mesures_id: 2,
+                        },
+                        {
+                            quantity: 1,
+                            price: 25,
+                            product_id: 5,
+                            mesures_id: 3,
+                        }
+                    ],
+            },
+            {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.DELIVERED,
+                provedor_id: 7,
+                itemsOrden: [
+                  {
+                    quantity: 1,
+                    price: 21,
+                    product_id: 5,
+                    mesures_id: 2
+                  },
+                  {
+                    quantity: 1,
+                    price: 25,
+                    product_id: 6,
+                    mesures_id: 3
+                  }
+                ]
+              },
+              {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.PENDING,
+                provedor_id: 3,
+                itemsOrden: [
+                  {
+                    quantity: 1,
+                    price: 21,
+                    product_id: 12,
+                    mesures_id: 5
+                  },
+                  {
+                    quantity: 1,
+                    price: 25,
+                    product_id: 8,
+                    mesures_id: 6
+                  }
+                ]
+              },
+              {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.CANCELLED,
+                provedor_id: 1,
+                itemsOrden: [
+                  {
+                    quantity: 1,
+                    price: 21,
+                    product_id: 20,
+                    mesures_id: 3
+                  },
+                  {
+                    quantity: 1,
+                    price: 25,
+                    product_id: 15,
+                    mesures_id: 7
+                  }
+                ]
+              },
+              {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.DELIVERED,
+                provedor_id: 9,
+                itemsOrden: [
+                  {
+                    quantity: 1,
+                    price: 21,
+                    product_id: 2,
+                    mesures_id: 4
+                  },
+                  {
+                    quantity: 1,
+                    price: 25,
+                    product_id: 1,
+                    mesures_id: 2
+                  }
+                ]
+              },
+              {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.PENDING,
+                provedor_id: 2,
+                itemsOrden: [
+                  {
+                    quantity: 1,
+                    price: 21,
+                    product_id: 10,
+                    mesures_id: 6
+                  },
+                  {
+                    quantity: 1,
+                    price: 25,
+                    product_id: 18,
+                    mesures_id: 5
+                  }
+                ]
+              },
+              {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.CANCELLED,
+                provedor_id: 5,
+                itemsOrden: [
+                  {
+                    quantity: 1,
+                    price: 21,
+                    product_id: 13,
+                    mesures_id: 3
+                  },
+                  {
+                    quantity: 1,
+                    price: 25,
+                    product_id: 17,
+                    mesures_id: 2
+                  }
+                ]
+              },
+              {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.DELIVERED,
+                provedor_id: 8,
+                itemsOrden: [
+                  {
+                    quantity: 1,
+                    price: 21,
+                    product_id: 4,
+                    mesures_id: 2
+                  },
+                  {
+                    quantity: 1,
+                    price: 25,
+                    product_id: 14,
+                    mesures_id: 4
+                  }
+                ]
+              },
+              {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.PENDING,
+                provedor_id: 6,
+                itemsOrden: [
+                  {
+                    quantity: 1,
+                    price: 21,
+                    product_id: 3,
+                    mesures_id: 5
+                  },
+                  {
+                    quantity: 1,
+                    price: 25,
+                    product_id: 19,
+                    mesures_id: 6
+                  }
+                ]
+              },
+              {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.CANCELLED,
+                provedor_id: 4,
+                itemsOrden: [
+                  {
+                    quantity: 1,
+                    price: 21,
+                    product_id: 11,
+                    mesures_id: 3
+                  },
+                  {
+                    quantity: 1,
+                    price: 25,
+                    product_id: 9,
+                    mesures_id: 7
+                  }
+                ]
+              },
+              {
+                total: 46,
+                itemsInOrder: 2,
+                state: OrderStatus.DELIVERED,
+                provedor_id: 10,
+                itemsOrden: [
+                  {
+                    quantity: 1,
+                    price: 21,
+                    product_id: 16,
+                    mesures_id: 4
+                  },
+                  {
+                    quantity: 1,
+                    price: 25,
+                    product_id: 12,
+                    mesures_id: 2
+                  }
+                ]
+              }
+
+        ],
+
+        ventas: [
+            {
+              client_id: '20456789127',
+              type: DocumentType.FACTURA,
+              type_payment: PaymentMethod.DEBITO,
+              itemsVenta: [
+                {
+                  id: 105,
+                  quantity: 6,
+                  price: 30,
+                  income: 15,
+                  product_id: 15,
+                  measures_id: 3
+                },
+                {
+                  id: 200,
+                  quantity: 2,
+                  price: 45,
+                  income: 10,
+                  product_id: 18,
+                  measures_id: 5
+                }
+              ]
+            },
+            {
+              client_id: '12345678',
+              type: DocumentType.BOLETA,
+              type_payment: PaymentMethod.EFECTIVO,
+              itemsVenta: [
+                {
+                  id: 50,
+                  quantity: 4,
+                  price: 20,
+                  income: 8,
+                  product_id: 10,
+                  measures_id: 7
+                }
+              ]
+            },
+            {
+              client_id: '56789012',
+              type: DocumentType.BOLETA,
+              type_payment: PaymentMethod.TRANSFERENCIA,
+              itemsVenta: [
+                {
+                  id: 205,
+                  quantity: 1,
+                  price: 60,
+                  income: 5,
+                  product_id: 2,
+                  measures_id: 6
+                },
+                {
+                  id: 120,
+                  quantity: 3,
+                  price: 25,
+                  income: 10,
+                  product_id: 7,
+                  measures_id: 4
+                }
+              ]
+            },
+            {
+              type: DocumentType.TICKET,
+              type_payment: PaymentMethod.CREDITO,
+              itemsVenta: [
+                {
+                  id: 199,
+                  quantity: 5,
+                  price: 15,
+                  income: 5,
+                  product_id: 12,
+                  measures_id: 3
+                }
+              ]
+            },
+            {
+              client_id: '20123456792',
+              type: DocumentType.FACTURA,
+              type_payment: PaymentMethod.CREDITO,
+              itemsVenta: [
+                {
+                  id: 88,
+                  quantity: 2,
+                  price: 35,
+                  income: 8,
+                  product_id: 19,
+                  measures_id: 5
+                },
+                {
+                  id: 150,
+                  quantity: 7,
+                  price: 50,
+                  income: 12,
+                  product_id: 3,
+                  measures_id: 2
+                }
+              ]
+            },
+            {
+              client_id: '89012345',
+              type: DocumentType.BOLETA,
+              type_payment: PaymentMethod.DEBITO,
+              itemsVenta: [
+                {
+                  id: 43,
+                  quantity: 4,
+                  price: 40,
+                  income: 20,
+                  product_id: 5,
+                  measures_id: 4
+                },
+                {
+                  id: 102,
+                  quantity: 6,
+                  price: 20,
+                  income: 12,
+                  product_id: 16,
+                  measures_id: 1
+                }
+              ]
+            },
+            {
+              client_id: '20456789124',
+              type: DocumentType.FACTURA,
+              type_payment: PaymentMethod.EFECTIVO,
+              itemsVenta: [
+                {
+                  id: 15,
+                  quantity: 3,
+                  price: 25,
+                  income: 7,
+                  product_id: 8,
+                  measures_id: 2
+                }
+              ]
+            },
+            {
+              type: DocumentType.TICKET,
+              type_payment: PaymentMethod.EFECTIVO,
+              itemsVenta: [
+                {
+                  id: 35,
+                  quantity: 2,
+                  price: 18,
+                  income: 3,
+                  product_id: 11,
+                  measures_id: 6
+                },
+                {
+                  id: 198,
+                  quantity: 1,
+                  price: 70,
+                  income: 5,
+                  product_id: 4,
+                  measures_id: 3
+                }
+              ]
+            },
+            {
+              client_id: '87654321',
+              type: DocumentType.BOLETA,
+              type_payment: PaymentMethod.TRANSFERENCIA,
+              itemsVenta: [
+                {
+                  id: 150,
+                  quantity: 5,
+                  price: 30,
+                  income: 10,
+                  product_id: 14,
+                  measures_id: 7
+                },
+                {
+                  id: 62,
+                  quantity: 7,
+                  price: 20,
+                  income: 8,
+                  product_id: 20,
+                  measures_id: 5
+                }
+              ]
+            },
+            {
+              client_id: '20456789125',
+              type: DocumentType.FACTURA,
+              type_payment: PaymentMethod.DEBITO,
+              itemsVenta: [
+                {
+                  id: 17,
+                  quantity: 4,
+                  price: 25,
+                  income: 12,
+                  product_id: 6,
+                  measures_id: 4
+                }
+              ]
+            }
+          ]
+          
 
 }

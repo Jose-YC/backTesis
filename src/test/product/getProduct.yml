@@ -1,0 +1,14 @@
+config:
+  target: "http://localhost:8081" # Cambia el puerto si tu servidor utiliza otro
+  phases:
+    - duration: 60  # Duración de la fase en segundos
+      arrivalRate: 10  # Usuarios virtuales por segundo (fase de carga)
+    - duration: 30  # Duración de la fase en segundos
+      arrivalRate: 50  # Usuarios virtuales por segundo (fase de estrés)
+  defaults:
+    headers:
+      Content-Type: "application/json"
+scenarios:
+  - flow:
+      - get:
+          url: "/product?page=1&lim=5"

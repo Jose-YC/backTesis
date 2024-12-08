@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "ItemsMeasures" ADD COLUMN     "income" DOUBLE PRECISION NOT NULL DEFAULT 10;

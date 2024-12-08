@@ -1,8 +1,14 @@
 export * from './Auth/auth.types';
-
-
+export * from './Category/category.types';
+export * from './Client/client.types';
+export * from './Measures/measures.types';
+export * from './Order/order.types';
 export * from './Pagination/pagination.type';
-
+export * from './Product/product.types';
+export * from './Product_Category/product.category.type';
+export * from './Product_Measures/product.measures.type';
+export * from './Proveedor/proveedor.type';
 export * from './Rol/rol.types';
-
 export * from './User/user.types';
+export * from './Venta/venta.types';
+export * from './VentaItem/venta.details.types';

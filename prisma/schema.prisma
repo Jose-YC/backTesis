@@ -13,11 +13,19 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
+enum ClientType {
+  NATURAL
+  JURIDICO
+  GENERAL
+}
+
 model Client {
-  dni         String    @id @unique
+  num_doc     String    @id @unique
+  type        ClientType
   name        String    
-  lastname    String
-  email       String   @unique
+  email       String?   @unique
+  phone       String?
+  address     String?
   state       Boolean   @default(true)
   
   createdAt  DateTime  @default(now())
@@ -54,8 +62,8 @@ model User {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
-  Order Order[]
-  Venta Venta[]
+  // Order Order[]
+  // Venta Venta[]
 }
 
 model Category {
@@ -81,6 +89,10 @@ model Measures  {
   updatedAt          DateTime   @updatedAt
 
   ItemsMeasures ItemsMeasures[]
+
+  OrderItem OrderItem[]
+
+  VentaItem VentaItem[]
 }
 model Product  {
   id                 Int      @id @default(autoincrement())
@@ -126,12 +138,15 @@ model ItemsMeasures {
   stock         Int
   min_stock     Int
   price         Float
+  income        Float @default(10)
   
   measures      Measures  @relation(fields: [measures_id], references: [id], onDelete: Cascade)
   product       Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
   createdAt          DateTime   @default(now())
   updatedAt          DateTime   @updatedAt
+
+   @@unique(name: "items_id", [measures_id, product_id])
 }
 model ItemsCategory {
   id            Int      @id @default(autoincrement())
@@ -144,66 +159,96 @@ model ItemsCategory {
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 }
+
+enum OrderStatus {
+  PENDING
+  DELIVERED
+  CANCELLED
+}
 model Order {
   id           Int    @id @default(autoincrement())
-  subTotal     Float
-  tax          Float
   total        Float
   itemsInOrder Int
-  user_id      Int
-  provedor_id  Int
-  state       Boolean   @default(true)
+  // user_id      Int
+  provedor_id   Int
+  state         OrderStatus @default(PENDING)
+  deliveredAt   DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Relaciones
-  user   User   @relation(fields: [user_id], references: [id])
+  // user   User   @relation(fields: [user_id], references: [id])
   proveedor  Suppliers @relation(fields: [provedor_id], references: [id])
   OrderItem    OrderItem[]
 
-  transactionId String?
+  // transactionId String?
 }
 model OrderItem {
-  id       String @id @default(uuid())
+  id       Int @id @default(autoincrement())
   quantity Int
   price    Float
   order_id Int
   product_id Int
+  mesures_id Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   
   // Relaciones
-  order   Order  @relation(fields: [order_id], references: [id])  
+  order     Order  @relation(fields: [order_id], references: [id], onDelete: Cascade)  
+  measure   Measures  @relation(fields: [mesures_id], references: [id])  
   product   Product @relation(fields: [product_id], references: [id])
 }
+
+enum PaymentMethod {
+  EFECTIVO
+  CREDITO
+  DEBITO
+  TRANSFERENCIA
+}
+
+enum DocumentType {
+  BOLETA
+  FACTURA
+  TICKET
+}
+
 model Venta {
-  id           Int    @id @default(autoincrement())
-  subTotal     Float
-  tax          Float
-  total        Float
-  itemsInOrder Int
-  user_id      Int
-  client_id    String
+  id            Int    @id @default(autoincrement())
+  type          DocumentType
+  type_payment  PaymentMethod
+  subTotal      Float
+  tax           Float
+  total         Float
+  itemsInVenta  Int
+  // user_id      Int
+  client_id    String @default("00000000")
   state       Boolean   @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Relaciones
-  user         User   @relation(fields: [user_id], references: [id])
-  client       Client @relation(fields: [client_id], references: [dni])
+  // user         User   @relation(fields: [user_id], references: [id])
+  client       Client @relation(fields: [client_id], references: [num_doc])
   ventaItem    VentaItem[]
-
-  transactionId String?
 }
 model VentaItem {
-  id          String @id @default(uuid())
+  id          Int @id @default(autoincrement())
   quantity    Int
   price       Float
-  order_id    Int
+  venta_id    Int
+  mesures_id Int
   product_id  Int
+  income      Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relaciones
-  venta   Venta  @relation(fields: [order_id], references: [id])
+  venta     Venta  @relation(fields: [venta_id], references: [id], onDelete: Cascade)
+  measure   Measures  @relation(fields: [mesures_id], references: [id])  
   product   Product @relation(fields: [product_id], references: [id])
 }
 

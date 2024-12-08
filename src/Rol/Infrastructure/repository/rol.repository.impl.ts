@@ -1,3 +1,4 @@
+
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
 import { CreateRolDtos, RolDatasource, RolEntity, RolRepository, UpdateRolDtos } from "../../Domain";

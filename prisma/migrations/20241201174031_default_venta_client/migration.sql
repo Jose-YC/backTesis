@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Venta" ALTER COLUMN "client_id" SET DEFAULT '00000000';
