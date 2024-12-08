@@ -6,7 +6,7 @@ services:
               context: ./
               dockerfile: Dockerfile
               args:
-                - PRODUCTBD=${POSTGRES_URL}
+                - POSTGRES_URL=${POSTGRES_URL}
             image: tesis
             ports:
               - ${PORT}:${PORT}

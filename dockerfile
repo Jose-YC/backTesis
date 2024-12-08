@@ -12,8 +12,8 @@ RUN npm install
 # Builder - Construye la aplicación
 FROM node:21-alpine3.19 as build
 
-ARG PRODUCTBD
-ENV POSTGRES_URL=$PRODUCTBD
+ARG POSTGRES_URL
+ENV POSTGRES_URL=$POSTGRES_URL
 
 # Imprimir el arg para ver el valor recibido
 RUN echo "database_url ::: $PRODUCTBD";
