@@ -15,9 +15,6 @@ FROM node:21-alpine3.19 as build
 ARG POSTGRES_URL
 ENV POSTGRES_URL=$POSTGRES_URL
 
-# Imprimir el arg para ver el valor recibido
-RUN echo "database_url ::: $PRODUCTBD";
-
 WORKDIR /app
 
 # Copiar de deps, los módulos de node
