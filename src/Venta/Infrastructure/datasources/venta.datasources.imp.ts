@@ -39,7 +39,9 @@ export class VentaDatasourcesImp implements VentaDatasource {
                 tax,
                 type: createVenta!.type,
                 type_payment: createVenta!.type_payment,
-                client_id: createVenta!.client_id,
+                ...(createVenta!.type === 'BOLETA' || createVenta!.type === 'FACTURA' 
+                    ? { client_id: createVenta!.client_id } 
+                    : {}),
                 ventaItem: {createMany:{ data : createVenta!.itemsVenta.map(object => ({
                     mesures_id: products.find(product => product.id === object.id)!.measures_id,
                     product_id: products.find(product => product.id === object.id)!.product_id,

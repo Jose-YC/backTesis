@@ -2,18 +2,18 @@ config:
   target: "https://backtesis-imz7.onrender.com"
   phases:
    # Fase inicial suave
-    - duration: 15
+    - duration: 5
       arrivalRate: 1
       name: "Initial warmup"
     
     # Fase de carga ligera
-    - duration: 30
-      arrivalRate: 5
+    - duration: 4
+      arrivalRate: 3
       name: "Light load phase"
     
     # Breve fase de estrés
-    - duration: 45
-      arrivalRate: 10
+    - duration: 4
+      arrivalRate: 5
       name: "Moderate stress phase"
   
   defaults:
@@ -21,10 +21,12 @@ config:
       Content-Type: "application/json"
 
 scenarios:
-  # Escenario 1: Listar productos
-  - name: "Product Listing"
+  - name: "Login"
     flow:
-      - get:
-          url: "/product?page=1&lim=5"
+      - post:
+          url: "/auth/login"
+          json:
+            email: "juanjoseyamunaquecastillo02@gmail.com"
+            password: "123456"
           expect:
             - statusCode: 200
