@@ -20,7 +20,7 @@ export class VentaController {
         
         const { page=0, lim=6 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new GetAllVenta(this.productRepository)
         .execute(paginateDtos!)
@@ -34,7 +34,7 @@ export class VentaController {
         const search = req.params.search;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim, search);
        
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
        new SearchVenta(this.productRepository)
        .execute(paginateDtos!)
@@ -65,7 +65,7 @@ export class VentaController {
 
     public postVenta = async (req:Request, res:Response) =>  {
         const [ error, createVentaDtos ] = CreateVentaDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         
         new CreateVenta(this.productRepository)

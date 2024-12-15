@@ -20,7 +20,7 @@ export class ClientController {
     public getClient = async (req:Request, res:Response) =>  {
         const { page=0, lim=6 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new GetAllClient(this.clientRepository)
         .execute(paginateDtos!)
@@ -33,7 +33,7 @@ export class ClientController {
         const { page=0, lim=5 } = req.query;
         const search = req.params.search;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim, search);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
        new SearchClient(this.clientRepository)
        .execute(paginateDtos!)
@@ -52,7 +52,7 @@ export class ClientController {
 
     public postClient = async (req:Request, res:Response) =>  {
         const [ error, createClientDtos ] = CreateClientDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new CreateClient(this.clientRepository)
         .execute(createClientDtos!)
@@ -63,7 +63,7 @@ export class ClientController {
     public putClient = async (req:Request, res:Response) =>  {
         const id = +req.params.id;
         const [ error, updateClientDtos ] = UpdateClientDtos.create({...req.body, id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         new UpdateClient(this.clientRepository)
         .execute(updateClientDtos!)

@@ -27,7 +27,7 @@ export class DetalleProductMeasuresController {
 
     public postDetalleProductMeasures = async (req:Request, res:Response) =>  {
         const [ error, createDetalleProductMeasuresDtos ] = CreateDetalleProductMeasuresDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
     
         
         new CreateDetalleProductMeasures(this.measuresRepository)
@@ -40,7 +40,7 @@ export class DetalleProductMeasuresController {
         const measures_id = +req.params.measures_id;
         const product_id = +req.params.product_id;
         const [ error, updateDetalleProductMeasuresDtos ] = UpdateDetalleProductMeasuresDtos.create({...req.body, measures_id, product_id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         new UpdateDetalleProductMeasures(this.measuresRepository)
         .execute(updateDetalleProductMeasuresDtos!)
@@ -52,7 +52,7 @@ export class DetalleProductMeasuresController {
         const measures_id = +req.params.measures_id;
         const product_id = +req.params.product_id;
         const [ error, stockItemsProductDtos ] = StockItemsProductDtos.create({...req.body, measures_id, product_id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         new IncrementStockProductUseCase(this.measuresRepository)
         .execute(stockItemsProductDtos!)
@@ -64,7 +64,7 @@ export class DetalleProductMeasuresController {
         const measures_id = +req.params.measures_id;
         const product_id = +req.params.product_id;
         const [ error, stockItemsProductDtos ] = StockItemsProductDtos.create({...req.body, measures_id, product_id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         new DecrementStockProductUseCase(this.measuresRepository)
         .execute(stockItemsProductDtos!)

@@ -18,7 +18,7 @@ export class RolController {
     public getRol = (req:Request, res:Response) =>  {
         const { page=0, lim=0 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         new GetAllRol(this.rolRepository)
         .execute(paginateDtos!)
@@ -29,7 +29,7 @@ export class RolController {
         const { page=0, lim=5 } = req.query;
         const search = req.params.search;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim, search);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
        
         new SearchRol(this.rolRepository)
        .execute(paginateDtos!)
@@ -47,7 +47,7 @@ export class RolController {
 
     public postRol = (req:Request, res:Response) =>  {
         const [ error, createRolDtos ] = CreateRolDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         new CreateRol(this.rolRepository)
         .execute(createRolDtos!)
         .then(Status => res.json({Status}))
@@ -57,7 +57,7 @@ export class RolController {
     public putRol = (req:Request, res:Response) =>  {
         const id = +req.params.id;
         const [ error, updateRolDtos ] = UpdateRolDtos.create({...req.body, id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         new UpdateRol(this.rolRepository)
         .execute(updateRolDtos!)
         .then(Status => res.json({Status}))

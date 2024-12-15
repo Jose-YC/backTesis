@@ -14,7 +14,7 @@ export class ProveedorController {
     public getProveedor = async (req:Request, res:Response) =>  {
         const { page=0, lim=6 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new GetAllProveedor(this.ProveedorRepository)
         .execute(paginateDtos!)
@@ -27,7 +27,7 @@ export class ProveedorController {
         const { page=0, lim=5 } = req.query;
         const search = req.params.search;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim, search);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
        new SearchProveedor(this.ProveedorRepository)
        .execute(paginateDtos!)
@@ -46,7 +46,7 @@ export class ProveedorController {
 
     public postProveedor = async (req:Request, res:Response) =>  {
         const [ error, createProveedorDtos ] = CreateProveedorDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
     
         
         new CreateProveedor(this.ProveedorRepository)
@@ -58,7 +58,7 @@ export class ProveedorController {
     public putProveedor = async (req:Request, res:Response) =>  {
         const id = +req.params.id;
         const [ error, updateProveedorDtos ] = UpdateProveedorDtos.create({...req.body, id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         new UpdateProveedor(this.ProveedorRepository)
         .execute(updateProveedorDtos!)

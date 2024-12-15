@@ -21,7 +21,7 @@ export class CategoryController {
     public getCategory = async (req:Request, res:Response) =>  {
         const { page=0, lim=6 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new GetAllCategory(this.categoryRepository)
         .execute(paginateDtos!)
@@ -33,7 +33,7 @@ export class CategoryController {
     public getChildrenCategory = async (req:Request, res:Response) =>  {
         const { page=0, lim=6 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new GetAllChildrenCategory(this.categoryRepository)
         .execute(paginateDtos!)
@@ -46,7 +46,7 @@ export class CategoryController {
         const { page=0, lim=5 } = req.query;
         const search = req.params.search;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim, search);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
        new SearchCategory(this.categoryRepository)
        .execute(paginateDtos!)
@@ -65,7 +65,7 @@ export class CategoryController {
 
     public postCategory = async (req:Request, res:Response) =>  {
         const [ error, createCategoryDtos ] = CreateCategoryDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new CreateCategory(this.categoryRepository)
         .execute(createCategoryDtos!)
@@ -76,7 +76,7 @@ export class CategoryController {
     public putCategory = async (req:Request, res:Response) =>  {
         const id = +req.params.id;
         const [ error, updateCategoryDtos ] = UpdateCategoryDtos.create({...req.body, id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         new UpdateCategory(this.categoryRepository)
         .execute(updateCategoryDtos!)

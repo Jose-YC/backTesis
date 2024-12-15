@@ -13,7 +13,7 @@ export class DetalleProductCategoryController {
     public getDetalleProductCategory = async (req:Request, res:Response) =>  {
         const { page=0, lim=6 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new GetAllDetalleProductCategory(this.measuresRepository)
         .execute(paginateDtos!)
@@ -34,7 +34,7 @@ export class DetalleProductCategoryController {
 
     public postDetalleProductCategory = async (req:Request, res:Response) =>  {
         const [ error, createDetalleProductCategoryDtos ] = CreateDetalleProductCategoryDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
     
         
         new CreateDetalleProductCategory(this.measuresRepository)

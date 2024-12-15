@@ -17,7 +17,7 @@ export class OrderController {
         
         const { page=0, lim=6 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new GetAllOrder(this.productRepository)
         .execute(paginateDtos!)
@@ -31,7 +31,7 @@ export class OrderController {
         const search = req.params.search;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim, search);
        
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
        new SearchOrder(this.productRepository)
        .execute(paginateDtos!)
@@ -72,7 +72,7 @@ export class OrderController {
 
     public postOrder = async (req:Request, res:Response) =>  {
         const [ error, createOrderDtos ] = CreateOrderDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         
         new CreateOrder(this.productRepository)
@@ -84,7 +84,7 @@ export class OrderController {
     public putOrder = async (req:Request, res:Response) =>  {
         const id = +req.params.id;
         const [ error, updateOrderDtos ] = UpdateOrderDtos.create({...req.body, id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         new UpdateOrder(this.productRepository)
         .execute(updateOrderDtos!)

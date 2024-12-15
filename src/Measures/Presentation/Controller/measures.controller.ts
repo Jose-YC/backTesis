@@ -14,7 +14,7 @@ export class MeasuresController {
     public getMeasures = async (req:Request, res:Response) =>  {
         const { page=0, lim=6 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new GetAllMeasures(this.measuresRepository)
         .execute(paginateDtos!)
@@ -27,7 +27,7 @@ export class MeasuresController {
         const { page=0, lim=5 } = req.query;
         const search = req.params.search;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim, search);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
        new SearchMeasures(this.measuresRepository)
        .execute(paginateDtos!)
@@ -46,7 +46,7 @@ export class MeasuresController {
 
     public postMeasures = async (req:Request, res:Response) =>  {
         const [ error, createMeasuresDtos ] = CreateMeasuresDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         // if (error) throw CustomError.badRequest(error);
     
         
@@ -59,7 +59,7 @@ export class MeasuresController {
     public putMeasures = async (req:Request, res:Response) =>  {
         const id = +req.params.id;
         const [ error, updateMeasuresDtos ] = UpdateMeasuresDtos.create({...req.body, id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         new UpdateMeasures(this.measuresRepository)
         .execute(updateMeasuresDtos!)

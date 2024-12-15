@@ -17,7 +17,7 @@ export class UserController {
     public getUser = async (req:Request, res:Response) =>  {
         const { page=0, lim=6 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new GetAllUser(this.userRepository)
         .execute(paginateDtos!)
@@ -30,7 +30,7 @@ export class UserController {
         const { page=0, lim=5 } = req.query;
         const search = req.params.search;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim, search);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
        new SearchUser(this.userRepository)
        .execute(paginateDtos!)
@@ -49,7 +49,7 @@ export class UserController {
 
     public postUser = async (req:Request, res:Response) =>  {
         const [ error, createUserDtos ] = CreateUserDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         const password = bcryptjsAdapter.hash(createUserDtos!.password);
         
@@ -62,7 +62,7 @@ export class UserController {
     public putProfile = async (req:Request, res:Response) =>  {
         const id = +req.params.id;
         const [ error, updateProfileDtos ] = UpdateProfileDtos.create({...req.body, id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new UpdateProfile(this.userRepository)
         .execute(updateProfileDtos!)
@@ -73,7 +73,7 @@ export class UserController {
     public putUser = async (req:Request, res:Response) =>  {
         const id = +req.params.id;
         const [ error, updateUserDtos ] = UpdateUserDtos.create({...req.body, id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         if (updateUserDtos!.password) {
             const password = bcryptjsAdapter.hash(updateUserDtos!.password);
@@ -89,7 +89,7 @@ export class UserController {
     public putUserPassword = async (req:Request, res:Response) =>  {
         const id = +req.params.id;
         const [ error, updatePasswordDtos ] = UpdatePasswordDtos.create({...req.body, id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         new UpdatePassword (this.userRepository)
         .execute(updatePasswordDtos!)

@@ -15,7 +15,7 @@ export class ProductController {
         
         const { page=0, lim=6 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new GetAllProduct(this.productRepository)
         .execute(paginateDtos!)
@@ -28,7 +28,7 @@ export class ProductController {
         
         const { page=0, lim=6 } = req.query;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
         new GetAllProductDetails(this.productRepository)
         .execute(paginateDtos!)
@@ -42,7 +42,7 @@ export class ProductController {
         const search = req.params.search;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim, search);
        
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
        new SearchProduct(this.productRepository)
        .execute(paginateDtos!)
@@ -55,7 +55,7 @@ export class ProductController {
         const search = req.params.search;
         const [error, paginateDtos] = PaginateDtos.create(+page, +lim, search);
        
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         
        new SearchProductDetails(this.productRepository)
        .execute(paginateDtos!)
@@ -83,19 +83,19 @@ export class ProductController {
 
     public postProduct = async (req:Request, res:Response) =>  {
         const [ error, createProductDtos ] = CreateProductDtos.create({...req.body, img:  req.files!.img});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
     
         
         new CreateProduct(this.productRepository)
         .execute(createProductDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> res.json({Status:false, message: error}));
     }
 
     public putProduct = async (req:Request, res:Response) =>  {
         const id = +req.params.id;
         const [ error, updateProductDtos ] = UpdateProductDtos.create({...req.body, id});
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
 
         new UpdateProduct(this.productRepository)
         .execute(updateProductDtos!)

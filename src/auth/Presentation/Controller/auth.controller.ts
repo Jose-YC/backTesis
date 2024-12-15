@@ -14,7 +14,8 @@ export class AuthController {
 
     login = (req:Request, res:Response) =>  {
         const [ error, loginDto ] = LoginDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        console.log(error)
+        if (error) return res.json({Status:false, message: error});
 
         new Login(this.authRepository)
         .execute(loginDto!)
@@ -24,7 +25,7 @@ export class AuthController {
 
     register = (req:Request, res:Response) =>  {
         const [ error, registerDto ] = RegisterDtos.create(req.body);
-        if (error) return res.json({Status:false, error});
+        if (error) return res.json({Status:false, message: error});
         new Register(this.authRepository)
         .execute(registerDto!)
         .then((resp) => {res.json({Status:true, resp})})
@@ -42,7 +43,7 @@ export class AuthController {
 
     renew = async (req:Request, res:Response) =>  {
         const { user } = req.body;
-        if (!user) return res.json({Status:false, error:'not logged in'});
+        if (!user) return res.json({Status:false, message:'not logged in'});
 
         new Renew (this.authRepository)
         .execute(user.id)
