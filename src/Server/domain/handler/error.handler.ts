@@ -5,7 +5,7 @@ import { CustomError } from "../errors/custom.error";
 export const errorHandler = (err: Error, res: Response) => {
 
     if (err instanceof CustomError) {
-        return res.status(err.httpCode).json({
+        return res.json({
             Status: false,
             message: err.message,
         });
