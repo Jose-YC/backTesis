@@ -9,6 +9,7 @@ import { GetByIdClient } from "../../Domain/UseCase/getById.client.usecase";
 import { CreateClient } from "../../Domain/UseCase/create.client.usecase";
 import { UpdateClient } from "../../Domain/UseCase/update.client.usecase";
 import { DeleteClient } from "../../Domain/UseCase/delete.client.usecase";
+import { errorHandler } from "../../../Server";
 
 export class ClientController {
 
@@ -24,7 +25,7 @@ export class ClientController {
         new GetAllClient(this.clientRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -37,7 +38,7 @@ export class ClientController {
        new SearchClient(this.clientRepository)
        .execute(paginateDtos!)
        .then(data => res.json({data}))
-       .catch(error=> res.json({Status:false, error}));
+       .catch(error=> errorHandler(error, res));
     }
 
     public getIdClient = async (req:Request, res:Response) =>  {
@@ -46,7 +47,7 @@ export class ClientController {
         new GetByIdClient(this.clientRepository)
         .execute(dni)
         .then(client => res.json({Status:true, client}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public postClient = async (req:Request, res:Response) =>  {
@@ -56,7 +57,7 @@ export class ClientController {
         new CreateClient(this.clientRepository)
         .execute(createClientDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putClient = async (req:Request, res:Response) =>  {
@@ -67,7 +68,7 @@ export class ClientController {
         new UpdateClient(this.clientRepository)
         .execute(updateClientDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
 
@@ -77,6 +78,6 @@ export class ClientController {
         new DeleteClient(this.clientRepository)
         .execute(dni)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 }

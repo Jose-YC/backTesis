@@ -1,4 +1,3 @@
-import { CustomError } from "../../../Server";
 
 export class CreateMeasuresDtos {
 
@@ -9,8 +8,8 @@ export class CreateMeasuresDtos {
 
     static create(props: {[key:string]:any}): [string?, CreateMeasuresDtos?]{
         const { name, abbrev } = props;
-        if (!name){throw CustomError.badRequest('Missing name');};
-        if (!abbrev){throw CustomError.badRequest('Missing abbreviation');};
+        if (!name) return ['Nombre vacio'];
+        if (!abbrev) return ['Abreviacion vacia'];
         return [undefined, new CreateMeasuresDtos( name, abbrev )] 
     }
 }

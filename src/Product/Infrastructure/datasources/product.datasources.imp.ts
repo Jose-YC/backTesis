@@ -1,5 +1,5 @@
 
-import { prisma } from "../../../Server";
+import { CustomError, prisma } from "../../../Server";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types";
 import { CreateProductDtos, ProductDatasource, ProductEntity, ProductEntityDtos, UpdateProductDtos } from "../../Domain";
@@ -26,7 +26,7 @@ export class ProductDatasourcesImp implements ProductDatasource {
 
         const images = await this.uploadImages(createProduct.img);
         if ( !images ) {
-            throw `imagenes no se pudieron ingresar`;
+            throw CustomError.internalServer('No se pudieron ingresar las imagenes');
         }   
 
         const product = await prisma.product.create({
@@ -179,13 +179,13 @@ export class ProductDatasourcesImp implements ProductDatasource {
               },
         });
 
-        if (!product) throw `product not found`;
+        if (!product) throw CustomError.badRequest('Producto no encontrado');
         return ProductEntity.fromObject(product);
     }
     async getIdProduct(id: number): Promise<ProductEntityDtos> {
         const product = await prisma.product.findFirst({where: { id }, include: { ProductImage:true},});
 
-        if (!product) throw `product not found`;
+        if (!product) throw CustomError.badRequest('Producto no encontrado');
         return ProductEntityDtos.fromObject(product);
     }
     async update(updateProduct: UpdateProductDtos): Promise<Boolean> {

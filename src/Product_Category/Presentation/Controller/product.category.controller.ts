@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { CreateDetalleProductCategory, CreateDetalleProductCategoryDtos, DeleteDetalleProductCategory,
          GetAllDetalleProductCategory, GetByIdDetalleProductCategory, DetalleProductCategoryRepository, } from "../../Domain";
+import { errorHandler } from "../../../Server";
 
 export class DetalleProductCategoryController {
 
@@ -17,7 +18,7 @@ export class DetalleProductCategoryController {
         new GetAllDetalleProductCategory(this.measuresRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -28,7 +29,7 @@ export class DetalleProductCategoryController {
         new GetByIdDetalleProductCategory(this.measuresRepository)
         .execute(product_id, category_id)
         .then(measures => res.json({Status:true, measures}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public postDetalleProductCategory = async (req:Request, res:Response) =>  {
@@ -39,7 +40,7 @@ export class DetalleProductCategoryController {
         new CreateDetalleProductCategory(this.measuresRepository)
         .execute(createDetalleProductCategoryDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public deleteDetalleProductCategory = async (req:Request, res:Response) =>  {
@@ -49,6 +50,6 @@ export class DetalleProductCategoryController {
         new DeleteDetalleProductCategory(this.measuresRepository)
         .execute(product_id, category_id)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 }

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import {  CategoryMonth, GetAllVentaItem, ProductSale, ProductTop, QuantityProductDay, VentaItemRepository, } from "../../Domain";
+import { errorHandler } from "../../../Server";
 
 export class VentaItemController {
 
@@ -13,7 +14,7 @@ export class VentaItemController {
         new GetAllVentaItem(this.measuresRepository)
         .execute(id!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -23,7 +24,7 @@ export class VentaItemController {
         new CategoryMonth(this.measuresRepository)
         .execute(new Date(startDate), new Date(endDate))
         .then(resp => { res.json({Status:true, resp})})
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -33,7 +34,7 @@ export class VentaItemController {
         new ProductTop(this.measuresRepository)
         .execute(new Date(startDate), new Date(endDate))
         .then(resp => { res.json({Status:true, resp})})
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -43,7 +44,7 @@ export class VentaItemController {
         new ProductSale(this.measuresRepository)
         .execute(new Date(startDate), new Date(endDate))
         .then(resp => { res.json({Status:true, resp})})
-        .catch(error=> {res.json({Status:false, error})});
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -53,7 +54,7 @@ export class VentaItemController {
         new QuantityProductDay(this.measuresRepository)
         .execute(new Date(startDate), new Date(endDate))
         .then(resp => { res.json({Status:true, resp})})
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 

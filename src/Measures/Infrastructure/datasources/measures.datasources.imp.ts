@@ -1,5 +1,5 @@
 
-import { prisma } from "../../../Server";
+import { CustomError, prisma } from "../../../Server";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
 import { MeasuresDatasource } from "../../Domain/datasource/measures.datasource";
@@ -63,7 +63,7 @@ export class MeasuresDatasourcesImp implements MeasuresDatasource {
     }
     async getId(id: number): Promise<MeasuresEntity> {
         const measure = await prisma.measures.findFirst({where: { id }});
-        if (!measure) throw `Catgory not found`;
+        if (!measure) throw CustomError.badRequest('Medida no encontrada');
         return MeasuresEntity.fromObject(measure);
     }
 

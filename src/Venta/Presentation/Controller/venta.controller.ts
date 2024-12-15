@@ -8,7 +8,7 @@ import { CreateVenta, CreateVentaDtos,
          QuantitySaleDay,
          CreateVentaPdf} from "../../Domain";
 import { GetByIdVentaDetails } from "../../Domain/UseCase/getByIdDetails.venta.usecase";
-import { CreateVentaPDFUseCase } from '../../../Types/Venta/venta.types';
+import { errorHandler } from "../../../Server";
 
 export class VentaController {
 
@@ -25,7 +25,7 @@ export class VentaController {
         new GetAllVenta(this.productRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -39,7 +39,7 @@ export class VentaController {
        new SearchVenta(this.productRepository)
        .execute(paginateDtos!)
        .then(data => res.json({data}))
-       .catch(error=> res.json({Status:false, error}));
+       .catch(error=> errorHandler(error, res));
     }
 
     public getIdVenta = async (req:Request, res:Response) =>  {
@@ -50,7 +50,7 @@ export class VentaController {
         .then(product => {
             res.json({Status:true, product})
         })
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public getIdVentaDetails = async (req:Request, res:Response) =>  {
@@ -58,10 +58,8 @@ export class VentaController {
 
         new GetByIdVentaDetails(this.productRepository)
         .execute(id)
-        .then(sale => {
-            res.json({Status:true, sale})
-        })
-        .catch(error=> { res.json({Status:false, error})});
+        .then(sale => res.json({Status:true, sale}))
+        .catch(error=> errorHandler(error, res));
     }
 
 
@@ -73,7 +71,7 @@ export class VentaController {
         new CreateVenta(this.productRepository)
         .execute(createVentaDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public getTotalMonth = async (req:Request, res:Response) =>  {
@@ -82,7 +80,7 @@ export class VentaController {
         new TotalMonth(this.productRepository)
         .execute(new Date(startDate), new Date(endDate))
         .then(resp => { res.json({Status:true, resp})})
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public getTotalDay = async (req:Request, res:Response) =>  {
@@ -91,7 +89,7 @@ export class VentaController {
         new TotalDay(this.productRepository)
         .execute(new Date(startDate), new Date(endDate))
         .then(resp => { res.json({Status:true, resp})})
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public getQuantitySaleDay = async (req:Request, res:Response) =>  {
@@ -100,7 +98,7 @@ export class VentaController {
         new QuantitySaleDay(this.productRepository)
         .execute(new Date(startDate), new Date(endDate))
         .then(resp => { res.json({Status:true, resp})})
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
     
     public getPdf = async (req:Request, res:Response) =>  {
@@ -112,10 +110,7 @@ export class VentaController {
             sale.pipe(res)
             sale.end()
         })
-        .catch(error=> {
-            console.log(error)
-            res.json({Status:false, error})
-        });
+        .catch(error=> errorHandler(error, res));
     }
 
 }

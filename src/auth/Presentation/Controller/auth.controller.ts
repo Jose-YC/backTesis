@@ -3,6 +3,7 @@ import { AuthRepository, Register,
          RegisterDtos, Login, 
          LoginDtos, ConfirEmail, 
          Renew} from "../../";
+import { errorHandler } from "../../../Server";
 
 export class AuthController {
 
@@ -17,14 +18,8 @@ export class AuthController {
 
         new Login(this.authRepository)
         .execute(loginDto!)
-        .then(({user, token}) => {
-            res.json({Status:true, user, token });
-        })
-        .catch((error)=> {
-            console.log(error);
-            res.json({Status:false, error}
-
-            )});
+        .then(({user, token}) => res.json({Status:true, user, token }))
+        .catch((error)=> errorHandler(error, res));
     }
 
     register = (req:Request, res:Response) =>  {
@@ -33,7 +28,7 @@ export class AuthController {
         new Register(this.authRepository)
         .execute(registerDto!)
         .then((resp) => {res.json({Status:true, resp})})
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
 
     }
 
@@ -42,7 +37,7 @@ export class AuthController {
 
         new ConfirEmail(this.authRepository)
         .execute(token).then((Status) => {res.json({Status})})
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     renew = async (req:Request, res:Response) =>  {
@@ -52,6 +47,6 @@ export class AuthController {
         new Renew (this.authRepository)
         .execute(user.id)
         .then((token) => {res.json({user, token})})
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 }

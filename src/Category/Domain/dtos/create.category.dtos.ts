@@ -11,9 +11,9 @@ export class CreateCategoryDtos {
 
     static create(props: {[key:string]:any}): [string?, CreateCategoryDtos?]{
         const { name, description, parent_id} = props;
-        if (parent_id && isNaN(Number(parent_id))){throw CustomError.badRequest('Missing id category')};
-        if (!name){throw CustomError.badRequest('Missing name');}
-        if (!description){throw CustomError.badRequest('Missing description');}
+        if (parent_id && isNaN(Number(parent_id)))return ['Codigo de la Categoria Root no valido'];
+        if (!name) return ['Nombre vacio'];
+        if (!description) return ['Descripcion vacia'];
         return [undefined, new CreateCategoryDtos( name, description, parent_id)] 
     }
 }

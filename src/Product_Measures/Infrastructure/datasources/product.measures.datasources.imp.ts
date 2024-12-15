@@ -1,5 +1,5 @@
 
-import { prisma } from "../../../Server";
+import { CustomError, prisma } from "../../../Server";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
 import { StockItemsProductDtos } from "../../Domain";
@@ -24,7 +24,7 @@ export class DetalleProductMeasuresDatasourcesImp implements DetalleProductMeasu
                 measures: true, 
             },
         });
-        if (!measure) throw `Detalle not found`;
+        if (!measure) throw CustomError.badRequest('Medidas no encontradas');
         return DetalleProductMeasuresEntity.fromObject(measure);
     }
 

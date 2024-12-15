@@ -6,6 +6,7 @@ import { CreateUser, CreateUserDtos, DeleteUser,
     GetAllUser, GetByIdUser, UpdatePassword, UpdatePasswordDtos, UpdateProfile, UpdateProfileDtos, UpdateUser, UpdateUserDtos, 
     UserRepository } from '../../';
 import { SearchUser } from "../../Domain/UseCase/searchUser.usecase";
+import { errorHandler } from "../../../Server";
 
 export class UserController {
 
@@ -21,7 +22,7 @@ export class UserController {
         new GetAllUser(this.userRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -34,7 +35,7 @@ export class UserController {
        new SearchUser(this.userRepository)
        .execute(paginateDtos!)
        .then(data => res.json({data}))
-       .catch(error=> res.json({Status:false, error}));
+       .catch(error=> errorHandler(error, res));
     }
 
     public getIdUser = async (req:Request, res:Response) =>  {
@@ -43,7 +44,7 @@ export class UserController {
         new GetByIdUser(this.userRepository)
         .execute(id)
         .then(user => res.json({user}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public postUser = async (req:Request, res:Response) =>  {
@@ -55,7 +56,7 @@ export class UserController {
         new CreateUser(this.userRepository)
         .execute({...createUserDtos!, password})
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putProfile = async (req:Request, res:Response) =>  {
@@ -66,7 +67,7 @@ export class UserController {
         new UpdateProfile(this.userRepository)
         .execute(updateProfileDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putUser = async (req:Request, res:Response) =>  {
@@ -82,7 +83,7 @@ export class UserController {
         new UpdateUser(this.userRepository)
         .execute(updateUserDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putUserPassword = async (req:Request, res:Response) =>  {
@@ -93,7 +94,7 @@ export class UserController {
         new UpdatePassword (this.userRepository)
         .execute(updatePasswordDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
 
@@ -102,6 +103,6 @@ export class UserController {
         new DeleteUser(this.userRepository)
         .execute(id)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 }

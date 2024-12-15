@@ -3,6 +3,7 @@ import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { CreateMeasures, CreateMeasuresDtos, DeleteMeasures,
          GetAllMeasures, GetByIdMeasures, MeasuresRepository, 
          SearchMeasures, UpdateMeasures, UpdateMeasuresDtos } from "../../Domain";
+import { CustomError, errorHandler } from "../../../Server";
 
 export class MeasuresController {
 
@@ -18,7 +19,7 @@ export class MeasuresController {
         new GetAllMeasures(this.measuresRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -31,7 +32,7 @@ export class MeasuresController {
        new SearchMeasures(this.measuresRepository)
        .execute(paginateDtos!)
        .then(data => res.json({data}))
-       .catch(error=> res.json({Status:false, error}));
+       .catch(error=> errorHandler(error, res));
     }
 
     public getIdMeasures = async (req:Request, res:Response) =>  {
@@ -40,18 +41,19 @@ export class MeasuresController {
         new GetByIdMeasures(this.measuresRepository)
         .execute(id)
         .then(measures => res.json({Status:true, measures}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public postMeasures = async (req:Request, res:Response) =>  {
         const [ error, createMeasuresDtos ] = CreateMeasuresDtos.create(req.body);
         if (error) return res.json({Status:false, error});
+        // if (error) throw CustomError.badRequest(error);
     
         
         new CreateMeasures(this.measuresRepository)
         .execute(createMeasuresDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putMeasures = async (req:Request, res:Response) =>  {
@@ -62,7 +64,7 @@ export class MeasuresController {
         new UpdateMeasures(this.measuresRepository)
         .execute(updateMeasuresDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
 
@@ -72,6 +74,8 @@ export class MeasuresController {
         new DeleteMeasures(this.measuresRepository)
         .execute(id)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
+
+    
 }

@@ -1,5 +1,3 @@
-import { CustomError } from "../../../Server";
-
 export class CreateDetalleProductCategoryDtos {
 
     private constructor(
@@ -9,8 +7,8 @@ export class CreateDetalleProductCategoryDtos {
 
     static create(props: {[key:string]:any}): [string?, CreateDetalleProductCategoryDtos?]{
         const { category_id,  product_id } = props;
-        if (!category_id || isNaN(Number(category_id))) return ['Id category must be a valid number']
-        if (product_id && isNaN(Number(product_id))) return ['Id product must be a valid number']
+        if (!category_id || isNaN(Number(category_id))) return ['Codigo de la categoria no valida']
+        if (product_id && isNaN(Number(product_id))) return ['Codigo del producto no valido']
         return [undefined, new CreateDetalleProductCategoryDtos( category_id,  product_id )] 
     }
 }

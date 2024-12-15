@@ -7,6 +7,7 @@ import { GetByIdRol } from "../../Domain/UseCase/getByIdRol.usecase";
 import { GetAllRol } from "../../Domain/UseCase/getAllRol.usecase";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { SearchRol } from "../../Domain/UseCase/searchRol.usecase";
+import { errorHandler } from "../../../Server";
 
 export class RolController {
 
@@ -22,7 +23,7 @@ export class RolController {
         new GetAllRol(this.rolRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
     public getSearchRol = (req:Request, res:Response) =>  {
         const { page=0, lim=5 } = req.query;
@@ -33,7 +34,7 @@ export class RolController {
         new SearchRol(this.rolRepository)
        .execute(paginateDtos!)
        .then(data => res.json({data}))
-       .catch(error=> res.json({Status:false, error}));
+       .catch(error=> errorHandler(error, res));
         
     }
     public getIdRol = (req:Request, res:Response) =>  {
@@ -41,7 +42,7 @@ export class RolController {
         new GetByIdRol(this.rolRepository)
         .execute(id)
         .then(rol => res.json({Status:true, rol}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public postRol = (req:Request, res:Response) =>  {
@@ -50,7 +51,7 @@ export class RolController {
         new CreateRol(this.rolRepository)
         .execute(createRolDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putRol = (req:Request, res:Response) =>  {
@@ -60,7 +61,7 @@ export class RolController {
         new UpdateRol(this.rolRepository)
         .execute(updateRolDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public deleteRol = (req:Request, res:Response) =>  {
@@ -68,6 +69,6 @@ export class RolController {
         new DeleteRol(this.rolRepository)
         .execute(id)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 }

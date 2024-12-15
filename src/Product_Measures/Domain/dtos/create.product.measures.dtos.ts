@@ -11,11 +11,12 @@ export class CreateDetalleProductMeasuresDtos {
 
     static create(props: {[key:string]:any}): [string?, CreateDetalleProductMeasuresDtos?]{
         const { measures_id, stock, product_id, min_stock, price, income } = props;
-        if (!measures_id || isNaN(Number(measures_id))) return ['Id category must be a valid number']
-        if (product_id && isNaN(Number(product_id))) return ['Id product must be a valid number']
-        if (!stock || isNaN(Number(stock))) return ['value must be a valid number']
-        if (!min_stock || isNaN(Number(min_stock))) return ['value must be a valid number']
-        if (!price || isNaN(Number(price))) return ['price must be a valid number']
+        if (!measures_id || isNaN(Number(measures_id))) return ['Codigo de la Medida no valida']
+        if (product_id && isNaN(Number(product_id))) return ['Codigo del producto no valido']
+        if (!stock || isNaN(Number(stock))) return ['Stock del producto no valido']
+        if (!min_stock || isNaN(Number(min_stock))) return ['Stock Minimo del producto no valido']
+        if (!price || isNaN(Number(price))) return ['Precio del producto no valido']
+        if (!income || isNaN(Number(income))) return ['Ganancia del producto no valido']
         return [undefined, new CreateDetalleProductMeasuresDtos( measures_id, stock, min_stock, price, product_id, income )] 
     }
 }

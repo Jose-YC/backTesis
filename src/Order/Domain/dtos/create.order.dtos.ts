@@ -14,9 +14,10 @@ export class CreateOrderDtos {
     static create(props: {[key:string]:any}): [string?, CreateOrderDtos?]{
         const { provedor_id, itemsOrden } = props;
     
-        if (!provedor_id|| isNaN(Number(provedor_id))){throw CustomError.badRequest('Missing id proveedor')};
+        if (!provedor_id|| isNaN(Number(provedor_id))) return ['Proveedor vacio'];
         const itemsOrdenEntity = itemsOrden.map((object:{[key:string]:any}) => {
             const [ error, itemsOrdendtos ] = CreateOrderItemDtos.create(object)
+            if (error) return [error];
             return itemsOrdendtos;
         });
         return [undefined, new CreateOrderDtos(provedor_id, itemsOrdenEntity)] 

@@ -3,6 +3,7 @@ import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { CreateProduct, CreateProductDtos, DeleteProduct, 
          GetAllProduct, GetAllProductDetails, GetByIdProduct, GetByIdProductDetails, ProductRepository, 
          SearchProduct, SearchProductDetails, UpdateProduct, UpdateProductDtos } from "../../Domain";
+import { errorHandler } from "../../../Server";
 
 export class ProductController {
 
@@ -19,7 +20,7 @@ export class ProductController {
         new GetAllProduct(this.productRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -32,7 +33,7 @@ export class ProductController {
         new GetAllProductDetails(this.productRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -46,7 +47,7 @@ export class ProductController {
        new SearchProduct(this.productRepository)
        .execute(paginateDtos!)
        .then(data => res.json({data}))
-       .catch(error=> res.json({Status:false, error}));
+       .catch(error=> errorHandler(error, res));
     }
 
     public getSearchProductDetails = async (req:Request, res:Response) =>  {
@@ -59,7 +60,7 @@ export class ProductController {
        new SearchProductDetails(this.productRepository)
        .execute(paginateDtos!)
        .then(data => res.json({data}))
-       .catch(error=> res.json({Status:false, error}));
+       .catch(error=> errorHandler(error, res));
     }
 
     public getIdProduct = async (req:Request, res:Response) =>  {
@@ -67,10 +68,8 @@ export class ProductController {
 
         new GetByIdProduct(this.productRepository)
         .execute(id)
-        .then(product => {
-            res.json({Status:true, product})
-        })
-        .catch(error=> res.json({Status:false, error}));
+        .then(product => res.json({Status:true, product}))
+        .catch(error=> errorHandler(error, res));
     }
 
     public getIdProductDetails = async (req:Request, res:Response) =>  {
@@ -78,10 +77,8 @@ export class ProductController {
 
         new GetByIdProductDetails(this.productRepository)
         .execute(id)
-        .then(product => {
-            res.json({Status:true, product})
-        })
-        .catch(error=> res.json({Status:false, error}));
+        .then(product => res.json({Status:true, product}))
+        .catch(error=> errorHandler(error, res));
     }
 
     public postProduct = async (req:Request, res:Response) =>  {
@@ -103,7 +100,7 @@ export class ProductController {
         new UpdateProduct(this.productRepository)
         .execute(updateProductDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
 
@@ -113,6 +110,6 @@ export class ProductController {
         new DeleteProduct(this.productRepository)
         .execute(id)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 }

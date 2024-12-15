@@ -6,6 +6,7 @@ import { CreateDetalleProductMeasures, CreateDetalleProductMeasuresDtos,
          IncrementStockProductUseCase,
          DecrementStockProductUseCase,
          StockItemsProductDtos} from "../../Domain";
+import { errorHandler } from "../../../Server";
 
 export class DetalleProductMeasuresController {
 
@@ -21,7 +22,7 @@ export class DetalleProductMeasuresController {
         new GetByIdDetalleProductMeasures(this.measuresRepository)
         .execute(product_id, measures_id)
         .then(measures => res.json({Status:true, measures}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public postDetalleProductMeasures = async (req:Request, res:Response) =>  {
@@ -32,7 +33,7 @@ export class DetalleProductMeasuresController {
         new CreateDetalleProductMeasures(this.measuresRepository)
         .execute(createDetalleProductMeasuresDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putDetalleProductMeasures = async (req:Request, res:Response) =>  {
@@ -44,7 +45,7 @@ export class DetalleProductMeasuresController {
         new UpdateDetalleProductMeasures(this.measuresRepository)
         .execute(updateDetalleProductMeasuresDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putIncrementProductMeasures = async (req:Request, res:Response) =>  {
@@ -56,7 +57,7 @@ export class DetalleProductMeasuresController {
         new IncrementStockProductUseCase(this.measuresRepository)
         .execute(stockItemsProductDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putDecrementProductMeasures = async (req:Request, res:Response) =>  {
@@ -68,7 +69,7 @@ export class DetalleProductMeasuresController {
         new DecrementStockProductUseCase(this.measuresRepository)
         .execute(stockItemsProductDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
 }

@@ -15,9 +15,9 @@ export class CreateClientDtos {
 
     static create(props: {[key:string]:any}): [string?, CreateClientDtos?]{
         const { num_doc, type, name, email, phone, address } = props;
-        if (!name){throw CustomError.badRequest('Missing name');}
-        if (!num_doc){throw CustomError.badRequest('Missing numero de documento');}
-        if (!type){throw CustomError.badRequest('Missing type');}
+        if (!name) return ['Nombre vacio'];
+        if (!num_doc) return ['Numero del documento vacio'];
+        if (!type) return ['Tipo de Cliente vacio'];
         return [undefined, new CreateClientDtos( num_doc, type, name, email, phone, address )] 
     }
 }

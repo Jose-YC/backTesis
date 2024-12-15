@@ -28,7 +28,7 @@ export class UpdateUserDtos {
 
         if (!id || isNaN(Number(id))) return ['id must be a valid number']
         if (email && !regularExps.email.test(email)) return ['Email is not valid'];
-        if (!name) ['Missing name'];
+        if (!name) return ['Missing name'];
         if (password && password.length < 6) return ['Password to short'];
         if (!lastname) return ['Missing last name'];
         if (!phone) return['Missing phone'];

@@ -1,5 +1,5 @@
 
-import { prisma } from "../../../Server";
+import { CustomError, prisma } from "../../../Server";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
 import { ClientDatasource } from "../../Domain/datasource/client.datasource";
@@ -65,7 +65,8 @@ export class ClientDatasourcesImp implements ClientDatasource {
     }
     async getId(num_doc: string): Promise<ClientEntity> {
         const client = await prisma.client.findFirst({where: { num_doc }});
-        if (!client) throw `Client not found`;
+
+        if (!client) throw CustomError.badRequest('Cliente no encontrado');
         return ClientEntity.fromObject(client);
     }
 

@@ -2,7 +2,7 @@
 import { PDFPrinter } from "../../../config/printer.adapter";
 import { DetalleProductMeasuresDatasourcesImp } from "../../../Product_Measures";
 import { OrdenStructure } from "../../../Reports";
-import { prisma } from "../../../Server";
+import { CustomError, prisma } from "../../../Server";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types";
 import { CreateOrderDtos, OrderDatasource, OrderEntity, OrderEntityDtos, UpdateOrderDtos } from "../../Domain";
@@ -82,7 +82,7 @@ export class OrderDatasourcesImp implements OrderDatasource {
             },
         });
 
-        if (!order) throw `Orden not found`;
+        if (!order) throw CustomError.badRequest('Orden no encontrada');
         return OrderEntity.fromObject(order);
     }
     async getIdDetails(id: number): Promise<OrderEntityDtos> {
@@ -99,7 +99,7 @@ export class OrderDatasourcesImp implements OrderDatasource {
             },
         });
 
-        if (!order) throw `Orden not found`;
+        if (!order) throw CustomError.badRequest('Orden no encontrada');
         return OrderEntityDtos.fromObject(order);
     }
 
@@ -126,8 +126,6 @@ export class OrderDatasourcesImp implements OrderDatasource {
             }},
             _sum: { total: true }
         });
-
-        console.log(sale);
 
         // if (!sale) throw `Sale not found`;
         return true;

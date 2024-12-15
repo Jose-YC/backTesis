@@ -10,6 +10,7 @@ import { CreateCategory } from "../../Domain/UseCase/create.category.usecase";
 import { UpdateCategory } from "../../Domain/UseCase/update.category.usecase";
 import { DeleteCategory } from "../../Domain/UseCase/delete.category.usecase";
 import { GetAllChildrenCategory } from "../../Domain/UseCase/getAllChildren.category.usecase";
+import { errorHandler } from "../../../Server";
 
 export class CategoryController {
 
@@ -25,7 +26,7 @@ export class CategoryController {
         new GetAllCategory(this.categoryRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -37,7 +38,7 @@ export class CategoryController {
         new GetAllChildrenCategory(this.categoryRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -50,7 +51,7 @@ export class CategoryController {
        new SearchCategory(this.categoryRepository)
        .execute(paginateDtos!)
        .then(data => res.json({data}))
-       .catch(error=> res.json({Status:false, error}));
+       .catch(error=> errorHandler(error, res));
     }
 
     public getIdCategory = async (req:Request, res:Response) =>  {
@@ -59,7 +60,7 @@ export class CategoryController {
         new GetByIdCategory(this.categoryRepository)
         .execute(id)
         .then(category => res.json({Status:true, category}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public postCategory = async (req:Request, res:Response) =>  {
@@ -69,7 +70,7 @@ export class CategoryController {
         new CreateCategory(this.categoryRepository)
         .execute(createCategoryDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putCategory = async (req:Request, res:Response) =>  {
@@ -80,7 +81,7 @@ export class CategoryController {
         new UpdateCategory(this.categoryRepository)
         .execute(updateCategoryDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
 
@@ -90,6 +91,6 @@ export class CategoryController {
         new DeleteCategory(this.categoryRepository)
         .execute(id)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 }

@@ -15,11 +15,12 @@ export class CreateVentaDtos {
         const { client_id, type, type_payment, itemsVenta } = props;
         
         if (type === "BOLETA" || type === "FACTURA") {
-            if (!client_id) return ['Missing client id'];
+            if (!client_id) return ['Cliente vacio'];
         }
         
         const itemsVentaEntity = itemsVenta.map((object:{[key:string]:any}) => {
             const [ error, itemsVentadtos ] = CreateVentaItemDtos.create(object)
+            if (error) return [error];
             return itemsVentadtos;
         });
         return [undefined, new CreateVentaDtos(client_id, type, type_payment, itemsVentaEntity)] 

@@ -5,6 +5,7 @@ import { CreateOrder, CreateOrderDtos,
          GetAllOrder, GetByIdOrder, OrderRepository, 
          SearchOrder, UpdateOrder, UpdateOrderDtos } from "../../Domain";
 import { GetByIdOrderDetails } from "../../Domain/UseCase/getByIdDetails.order.usecase";
+import { errorHandler } from "../../../Server";
 
 export class OrderController {
 
@@ -21,7 +22,7 @@ export class OrderController {
         new GetAllOrder(this.productRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -35,7 +36,7 @@ export class OrderController {
        new SearchOrder(this.productRepository)
        .execute(paginateDtos!)
        .then(data => res.json({data}))
-       .catch(error=> res.json({Status:false, error}));
+       .catch(error=> errorHandler(error, res));
     }
 
     public getIdOrder = async (req:Request, res:Response) =>  {
@@ -43,10 +44,8 @@ export class OrderController {
 
         new GetByIdOrder(this.productRepository)
         .execute(id)
-        .then(product => {
-            res.json({Status:true, product})
-        })
-        .catch(error=> res.json({Status:false, error}));
+        .then(product => res.json({Status:true, product}))
+        .catch(error=> errorHandler(error, res));
     }
 
     public getIdOrderDetails = async (req:Request, res:Response) =>  {
@@ -54,10 +53,8 @@ export class OrderController {
 
         new GetByIdOrderDetails(this.productRepository)
         .execute(id)
-        .then(orden => {
-            res.json({Status:true, orden})
-        })
-        .catch(error=> res.json({Status:false, error}));
+        .then(orden => res.json({Status:true, orden}))
+        .catch(error=> errorHandler(error, res));
     }
 
     public getPdf = async (req:Request, res:Response) =>  {
@@ -69,10 +66,7 @@ export class OrderController {
             orden.pipe(res)
             orden.end()
         })
-        .catch(error=> {
-            console.log(error)
-            res.json({Status:false, error})
-        });
+        .catch(error=> errorHandler(error, res));
     }
 
 
@@ -84,7 +78,7 @@ export class OrderController {
         new CreateOrder(this.productRepository)
         .execute(createOrderDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putOrder = async (req:Request, res:Response) =>  {
@@ -95,6 +89,6 @@ export class OrderController {
         new UpdateOrder(this.productRepository)
         .execute(updateOrderDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 }

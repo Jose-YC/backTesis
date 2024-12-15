@@ -1,5 +1,5 @@
 
-import { prisma } from "../../../Server";
+import { CustomError, prisma } from "../../../Server";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
 import { DetalleProductCategoryDatasource } from "../../Domain/datasource/product.category.datasource";
@@ -43,12 +43,8 @@ export class DetalleProductCategoryDatasourcesImp implements DetalleProductCateg
                 category: true, 
             },
         });
-        if (!itemsCategory) throw `Detalle not found`;
-        return  DetalleProductCategoryEntity.fromObject({
-            id: itemsCategory.id, 
-            name: itemsCategory.category.name, 
-            category_id: itemsCategory.category_id, 
-            product_id: itemsCategory.product_id})
+        if (!itemsCategory) throw CustomError.badRequest('Categorias no encontradas');
+        return  DetalleProductCategoryEntity.fromObject(itemsCategory)
         }
 
     async delete(product_id: number, category_id: number): Promise<Boolean> {

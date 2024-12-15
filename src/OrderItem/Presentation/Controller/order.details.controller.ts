@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import {  GetAllOrderItem, OrderItemRepository, } from "../../Domain";
+import { errorHandler } from "../../../Server";
 
 export class OrderItemController {
 
@@ -13,7 +14,7 @@ export class OrderItemController {
         new GetAllOrderItem(this.measuresRepository)
         .execute(id!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 

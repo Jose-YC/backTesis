@@ -3,6 +3,7 @@ import { CreateProveedor, CreateProveedorDtos, DeleteProveedor,
     GetAllProveedor, GetByIdProveedor, ProveedorRepository, SearchProveedor, 
     UpdateProveedor, UpdateProveedorDtos } from "../../Domain";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
+import { errorHandler } from "../../../Server";
 
 export class ProveedorController {
 
@@ -18,7 +19,7 @@ export class ProveedorController {
         new GetAllProveedor(this.ProveedorRepository)
         .execute(paginateDtos!)
         .then(data => res.json({data}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
        
     }
 
@@ -31,7 +32,7 @@ export class ProveedorController {
        new SearchProveedor(this.ProveedorRepository)
        .execute(paginateDtos!)
        .then(data => res.json({data}))
-       .catch(error=> res.json({Status:false, error}));
+       .catch(error=> errorHandler(error, res));
     }
 
     public getIdProveedor = async (req:Request, res:Response) =>  {
@@ -40,7 +41,7 @@ export class ProveedorController {
         new GetByIdProveedor(this.ProveedorRepository)
         .execute(id)
         .then(supplier => res.json({Status:true, supplier}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public postProveedor = async (req:Request, res:Response) =>  {
@@ -51,7 +52,7 @@ export class ProveedorController {
         new CreateProveedor(this.ProveedorRepository)
         .execute(createProveedorDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
     public putProveedor = async (req:Request, res:Response) =>  {
@@ -62,7 +63,7 @@ export class ProveedorController {
         new UpdateProveedor(this.ProveedorRepository)
         .execute(updateProveedorDtos!)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 
 
@@ -71,6 +72,6 @@ export class ProveedorController {
         new DeleteProveedor(this.ProveedorRepository)
         .execute(id)
         .then(Status => res.json({Status}))
-        .catch(error=> res.json({Status:false, error}));
+        .catch(error=> errorHandler(error, res));
     }
 }

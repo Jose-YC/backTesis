@@ -1,5 +1,5 @@
 
-import { prisma } from "../../../Server";
+import { CustomError, prisma } from "../../../Server";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
 import { CreateProveedorDtos, ProveedorDatasource, ProveedorEntity, UpdateProveedorDtos } from "../../Domain";
@@ -49,7 +49,8 @@ export class ProveedorDatasourcesImp implements ProveedorDatasource {
     }
     async getId(id: number): Promise<ProveedorEntity> {
         const supplier = await prisma.suppliers.findFirst({where: { id }});
-        if (!supplier) throw `Supplier not found`;
+        
+        if (!supplier) throw CustomError.badRequest('Proveedor no encontrado');
         return ProveedorEntity.fromObject(supplier);
     }
     async update(updateProveedor: UpdateProveedorDtos): Promise<Boolean> {

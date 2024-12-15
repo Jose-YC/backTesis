@@ -13,11 +13,11 @@ export class CreateOrderItemDtos {
     static create(props: {[key:string]:any}): [string?, CreateOrderItemDtos?]{
         const { id, quantity, price, product_id, measures_id } = props;
 
-        if (!id|| isNaN(Number(id))){throw CustomError.badRequest('Missing quantity')};
-        if (!quantity|| isNaN(Number(quantity))){throw CustomError.badRequest('Missing quantity')};
-        if (!price|| isNaN(Number(price))){throw CustomError.badRequest('Missing price')};
-        if (!product_id|| isNaN(Number(product_id))){throw CustomError.badRequest('Missing id producto')};
-        if (!measures_id|| isNaN(Number(measures_id))){throw CustomError.badRequest('Missing id measures')};
+        if (!id|| isNaN(Number(id))) return ['Codigo no valido'];
+        if (!quantity|| isNaN(Number(quantity))) return ['Cantidad no valida'];;
+        if (!price|| isNaN(Number(price))) return ['Precio no valido'];
+        if (!product_id|| isNaN(Number(product_id))) return ['Codigo del Producto no valido'];
+        if (!measures_id|| isNaN(Number(measures_id))) return ['Codigo de la Medida no valida'];
         
         return [undefined, new CreateOrderItemDtos( id, quantity, price, product_id, measures_id )] 
     }

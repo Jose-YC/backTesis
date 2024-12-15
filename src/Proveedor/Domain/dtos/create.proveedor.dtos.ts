@@ -13,11 +13,11 @@ export class CreateProveedorDtos {
 
     static create(props: {[key:string]:any}): [string?, CreateProveedorDtos?]{
         const {repre, ruc, email, phone, address} = props;
-        if (!email){throw CustomError.badRequest('Missing email');}
-        if (!repre){throw CustomError.badRequest('Missing representate');}
-        if (!ruc){throw CustomError.badRequest('Missing ruc');}
-        if (!address){throw CustomError.badRequest('Missing address');}
-        if (!phone){throw CustomError.badRequest('Missing phone');}
+        if (!email) return ['Email vacio'];
+        if (!repre) return ['Nombre del representante vacio'];
+        if (!ruc) return ['Ruc vacio'];
+        if (!address) return ['Direccion vacia'];
+        if (!phone) return ['Celular vacio'];
         return [undefined, new CreateProveedorDtos(repre, ruc, email, phone, address,)] 
     }
 }

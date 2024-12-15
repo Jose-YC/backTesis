@@ -1,5 +1,5 @@
 
-import { prisma } from "../../../Server";
+import { CustomError, prisma } from "../../../Server";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
 import { CreateRolDtos, RolDatasource, RolEntity, UpdateRolDtos } from "../../Domain";
@@ -45,7 +45,8 @@ export class RolDatasourcesImp implements RolDatasource {
     }
     async getId(id: number): Promise<RolEntity> {
         const rol = await prisma.rol.findFirst({where: { id }});
-        if (!rol) throw `Rol not found`;
+        if (!rol) throw CustomError.badRequest('Rol no encontrado');
+
         return RolEntity.fromObject(rol);
     }
     async update(updateRol: UpdateRolDtos): Promise<Boolean> {

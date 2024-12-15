@@ -1,5 +1,5 @@
 
-import { prisma } from "../../../Server";
+import { CustomError, prisma } from "../../../Server";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
 import { CategoryDatasource } from "../../Domain/datasource/category.datasource";
@@ -77,7 +77,7 @@ export class CategoryDatasourcesImp implements CategoryDatasource {
     }
     async getId(id: number): Promise<CategoryEntity> {
         const category = await prisma.category.findFirst({where: { id }});
-        if (!category) throw `Catgory not found`;
+        if (!category) throw CustomError.badRequest('Categoria no encontrada');
         return CategoryEntity.fromObject(category);
     }
 

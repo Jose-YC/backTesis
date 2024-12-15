@@ -48,7 +48,8 @@ export class UserDatasourcesImp implements UserDatasource {
     }
     async getId(id: number): Promise<UserEntity> {
         const user = await prisma.user.findFirst({where: { id }});
-        if (!user) throw `User not found`;
+        if (!user) throw CustomError.badRequest('Usuario no encontrado');
+
         return UserEntity.fromObject(user);
     }
     async update(updateUser: UpdateUserDtos): Promise<Boolean> {
@@ -73,10 +74,10 @@ export class UserDatasourcesImp implements UserDatasource {
 
     async updatePassword(updatePassword: UpdatePasswordDtos): Promise<Boolean> {    
         const user = await prisma.user.findFirst({where:{id:updatePassword.id}});
-        if (!user) throw CustomError.badRequest('user incorrect');
+        if (!user) throw CustomError.badRequest('Usuario no encontrado');
         
         const validPasword = bcryptjsAdapter.compare(updatePassword!.oldPassword, user.password,);
-        if (!validPasword) throw CustomError.badRequest('password incorrect');
+        if (!validPasword) throw CustomError.badRequest('Password incorrecta');
 
         const password = bcryptjsAdapter.hash(updatePassword!.password);
 

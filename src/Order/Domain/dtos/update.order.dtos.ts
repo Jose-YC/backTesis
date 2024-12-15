@@ -19,8 +19,8 @@ export class UpdateOrderDtos {
     static create(props: {[key:string]:any}): [string?, UpdateOrderDtos?]{
         const { id, state } = props;
         
-        if (!id|| isNaN(Number(id))){throw CustomError.badRequest('Missing id')};
-        if (!state){throw CustomError.badRequest('Missing state');}
+        if (!id || isNaN(Number(id))) return ['Codigo no valido']
+        if (!state) return ['Estado Vacio']
         
         return [undefined, new UpdateOrderDtos(id, state)]
     }

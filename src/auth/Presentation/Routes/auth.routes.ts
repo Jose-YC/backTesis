@@ -19,12 +19,7 @@ export class AuthRoutes {
         const authRepository = new AuthRepositoryImp(authDatasource)
         const authController= new AuthController(authRepository);
 
-        
-        const datasource = new UserDatasourcesImp();
-        const userRepository = new UserRepositoryImp(datasource)
-        const authMiddleware = new AuthMiddleware(userRepository);
-
-        router.get('/renew', authMiddleware.validateJWT, authController.renew);
+        router.get('/renew', authController.renew);
         router.post('/login', authController.login);
         router.post('/register', authController.register);
         router.get('/validate-email/:token', authController.validateEmail);

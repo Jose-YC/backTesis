@@ -1,7 +1,7 @@
 import { PDFPrinter } from "../../../config/printer.adapter";
 import { DetalleProductMeasuresDatasourcesImp } from "../../../Product_Measures";
 import { VentaStructure } from "../../../Reports";
-import { prisma } from "../../../Server";
+import { CustomError, prisma } from "../../../Server";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types";
 import { CreateVentaDtos, DashboardDtos, VentaDatasource, VentaEntity, VentaEntityDtos } from "../../Domain";
@@ -91,7 +91,7 @@ export class VentaDatasourcesImp implements VentaDatasource {
             },
         });
 
-        if (!sale) throw `Sale not found`;
+        if (!sale) throw CustomError.badRequest('Venta no encontrada');
         return VentaEntity.fromObject(sale);
     }
     async getIdDetails(id: number): Promise<VentaEntityDtos> {
@@ -108,7 +108,7 @@ export class VentaDatasourcesImp implements VentaDatasource {
             },
         });
 
-        if (!sale) throw `Sale not found`;
+        if (!sale) throw CustomError.badRequest('Venta no encontrada');
         return VentaEntityDtos.fromObject(sale);
     }
 
