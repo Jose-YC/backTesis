@@ -4,28 +4,36 @@ import { VentaRepositoryImp } from "../../Infrastructure/repository/venta.reposi
 import { VentaController } from "../Controller/venta.controller";
 import { DetalleProductMeasuresDatasourcesImp } from "../../../Product_Measures";
 import { PDFPrinter } from "../../../config/printer.adapter";
+import { UserDatasourcesImp, UserRepositoryImp } from "../../../User";
+import { AuthMiddleware } from "../../../auth/Presentation/Middleware/auth.middleware";
 
 export class VentaRoutes {
 
     static get routes():Router{
         const router = Router();
+        // servicio
         const printer = new PDFPrinter();
+        // controlador
         const datasourceProduct = new DetalleProductMeasuresDatasourcesImp()
         const datasource = new VentaDatasourcesImp(datasourceProduct, printer);
         const ventaRepository = new VentaRepositoryImp(datasource)
         const ventaController= new VentaController(ventaRepository);
+        // middleware
+        const userDatasource = new UserDatasourcesImp();
+        const userRepository = new UserRepositoryImp(userDatasource);
+        const authMiddleware = new AuthMiddleware(userRepository);   
         
-        router.get('/',ventaController.getVenta);
-        router.get('/:search', ventaController.getSearchVenta);
-        router.get('/search/:id', ventaController.getIdVenta);
-        router.get('/pdf/:id', ventaController.getPdf);
-        router.get('/details/search/:id', ventaController.getIdVentaDetails);
+        router.get('/', authMiddleware.validateJWT, ventaController.getVenta);
+        router.get('/:search', authMiddleware.validateJWT, ventaController.getSearchVenta);
+        router.get('/search/:id', authMiddleware.validateJWT, ventaController.getIdVenta);
+        router.get('/pdf/:id', authMiddleware.validateJWT, ventaController.getPdf);
+        router.get('/details/search/:id', authMiddleware.validateJWT, ventaController.getIdVentaDetails);
         
-        router.post('/total/month', ventaController.getTotalMonth);
-        router.post('/total/day', ventaController.getTotalDay);
-        router.post('/quantity', ventaController.getQuantitySaleDay);
+        router.post('/total/month', authMiddleware.validateJWT, ventaController.getTotalMonth);
+        router.post('/total/day', authMiddleware.validateJWT, ventaController.getTotalDay);
+        router.post('/quantity', authMiddleware.validateJWT, ventaController.getQuantitySaleDay);
 
-        router.post('/create', ventaController.postVenta);
+        router.post('/create', authMiddleware.validateJWT, ventaController.postVenta);
         
         return router;
     }

@@ -14,7 +14,6 @@ export class AuthController {
 
     login = (req:Request, res:Response) =>  {
         const [ error, loginDto ] = LoginDtos.create(req.body);
-        console.log(error)
         if (error) return res.json({Status:false, message: error});
 
         new Login(this.authRepository)
@@ -26,6 +25,7 @@ export class AuthController {
     register = (req:Request, res:Response) =>  {
         const [ error, registerDto ] = RegisterDtos.create(req.body);
         if (error) return res.json({Status:false, message: error});
+        
         new Register(this.authRepository)
         .execute(registerDto!)
         .then((resp) => {res.json({Status:true, resp})})
