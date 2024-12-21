@@ -38,10 +38,12 @@ export class OrderRoutes {
             authMiddleware.validateRol(...['admin', 'asistente almacen', 'jefe almacen'])
         ], ordenController.getIdOrder);
 
-        router.get('/pdf/:id', [
-            authMiddleware.validateJWT, 
-            authMiddleware.validateRol(...['admin', 'asistente almacen', 'jefe almacen'])
-        ], ordenController.getPdf);
+        // router.get('/pdf/:id', [
+        //     authMiddleware.validateJWT, 
+        //     authMiddleware.validateRol(...['admin', 'asistente almacen', 'jefe almacen'])
+        // ], ordenController.getPdf);
+
+        router.get('/pdf/:id', ordenController.getPdf);
 
         router.get('/details/search/:id', [
             authMiddleware.validateJWT, 

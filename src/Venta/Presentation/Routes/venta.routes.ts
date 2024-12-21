@@ -38,10 +38,13 @@ export class VentaRoutes {
             authMiddleware.validateRol(...['admin', 'vendedor', 'jefe ventas', 'gerente'])
         ], ventaController.getIdVenta);
 
-        router.get('/pdf/:id', [
-            authMiddleware.validateJWT, 
-            authMiddleware.validateRol(...['admin', 'vendedor', 'jefe ventas', 'gerente'])
-        ], ventaController.getPdf);
+        // router.get('/pdf/:id', [
+        //     authMiddleware.validateJWT, 
+        //     authMiddleware.validateRol(...['admin', 'vendedor', 'jefe ventas', 'gerente'])
+        // ], ventaController.getPdf);
+
+        router.get('/pdf/:id', ventaController.getPdf);
+
 
         router.get('/details/search/:id', [
             authMiddleware.validateJWT, 
