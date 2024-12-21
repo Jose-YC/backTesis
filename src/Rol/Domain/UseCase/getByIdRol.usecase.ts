@@ -1,9 +1,8 @@
-import { GetByIdRolUseCase } from "../../../Types/Rol/rol.types";
+import { UseCase } from "../../../Types";
 import { RolEntity, RolRepository } from "../";
 
-export class GetByIdRol implements GetByIdRolUseCase {
+export class GetByIdRol implements UseCase<RolEntity, number> {
     
-
     constructor(
         private readonly repository:RolRepository,
     ){}

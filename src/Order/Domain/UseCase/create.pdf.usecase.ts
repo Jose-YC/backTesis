@@ -1,8 +1,8 @@
-import {  CreatePDFUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { OrderRepository } from "../repositories/order.repository";
 
 
-export class CreatePdf implements CreatePDFUseCase{
+export class CreatePdf implements UseCase<PDFKit.PDFDocument, number>{
     
     constructor(
         private readonly repository:OrderRepository,

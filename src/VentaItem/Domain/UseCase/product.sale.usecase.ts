@@ -1,9 +1,9 @@
-import { ProductSaleUseCase } from "../../../Types";
+import { UseCaseDetails } from "../../../Types";
 import { DashboardDtos } from "../../../Venta/Domain";
 import { VentaItemRepository } from "../repositories/venta.details.repository";
 
 
-export class ProductSale implements ProductSaleUseCase {
+export class ProductSale implements UseCaseDetails<DashboardDtos[], Date, Date> {
     
     constructor(
         private readonly repository:VentaItemRepository,

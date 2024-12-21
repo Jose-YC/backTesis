@@ -1,8 +1,8 @@
-import {  TotalDayUseCase } from "../../../Types";
+import { UseCaseDetails } from "../../../Types";
 import { DashboardDtos } from "../dtos/dashboard.dtos";
 import { VentaRepository } from "../repositories/venta.repository";
 
-export class TotalDay implements TotalDayUseCase {
+export class TotalDay implements UseCaseDetails<DashboardDtos[], Date, Date> {
     
     constructor(
         private readonly repository:VentaRepository,

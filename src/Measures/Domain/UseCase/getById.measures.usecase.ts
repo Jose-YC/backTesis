@@ -1,9 +1,9 @@
-import { GetByIdMeasuresUseCase } from '../../../Types';
+import { UseCase } from '../../../Types';
 import { MeasuresEntity } from '../Entity/measures.entity';
 import { MeasuresRepository } from '../repositories/measures.repository';
 
 
-export class GetByIdMeasures implements GetByIdMeasuresUseCase {
+export class GetByIdMeasures implements UseCase<MeasuresEntity, number> {
     
     constructor(
         private readonly repository:MeasuresRepository,

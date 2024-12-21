@@ -1,10 +1,9 @@
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
-import { GetAllProductDtosUseCase, PaginateResponse } from "../../../Types";
+import { UseCasePaginate, PaginateResponse } from "../../../Types";
 import { ProductEntityDtos } from "../dtos/product.dtos";
-import { ProductEntity } from "../Entity/product.entity";
 import { ProductRepository } from "../repositories/product.repository";
 
-export class SearchProduct implements GetAllProductDtosUseCase {
+export class SearchProduct implements UseCasePaginate<ProductEntityDtos, PaginateDtos> {
     
     constructor(
         private readonly repository:ProductRepository,

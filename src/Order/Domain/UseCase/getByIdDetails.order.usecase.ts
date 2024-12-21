@@ -1,8 +1,8 @@
-import { GetByIdOrderDetailsUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { OrderEntityDtos } from "../dtos/orden.entity.dtos";
 import { OrderRepository } from "../repositories/order.repository";
 
-export class GetByIdOrderDetails implements GetByIdOrderDetailsUseCase {
+export class GetByIdOrderDetails implements UseCase<OrderEntityDtos, number> {
     
     constructor(
         private readonly repository:OrderRepository,

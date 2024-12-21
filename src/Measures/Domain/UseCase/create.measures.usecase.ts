@@ -1,8 +1,8 @@
-import { CreateMeasuresUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { CreateMeasuresDtos } from "../dtos/create.measures.dtos";
 import { MeasuresRepository } from "../repositories/measures.repository";
 
-export class CreateMeasures implements CreateMeasuresUseCase {
+export class CreateMeasures implements UseCase<Boolean, CreateMeasuresDtos> {
     
     constructor(
         private readonly repository:MeasuresRepository,

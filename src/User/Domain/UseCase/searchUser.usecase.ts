@@ -1,9 +1,9 @@
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { UserEntity, UserRepository } from "../";
-import { GetAllUserUseCase, PaginateResponse } from "../../../Types/Pagination/pagination.type";
+import { UseCasePaginate, PaginateResponse } from "../../../Types/Pagination/pagination.type";
 
 
-export class SearchUser implements GetAllUserUseCase {
+export class SearchUser implements UseCasePaginate<UserEntity, PaginateDtos> {
     
     constructor(
         private readonly repository:UserRepository,

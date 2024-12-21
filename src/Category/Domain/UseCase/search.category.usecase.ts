@@ -1,9 +1,9 @@
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
-import { GetAllCategoryUseCase, PaginateResponse } from "../../../Types";
+import { UseCasePaginate, PaginateResponse } from "../../../Types";
 import { CategoryEntity } from "../Entity/category.entity";
 import { CategoryRepository } from "../repositories/category.repository";
 
-export class SearchCategory implements GetAllCategoryUseCase {
+export class SearchCategory implements UseCasePaginate<CategoryEntity, PaginateDtos> {
     
     constructor(
         private readonly repository:CategoryRepository,

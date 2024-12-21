@@ -1,9 +1,9 @@
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
-import { GetAllMeasuresUseCase, PaginateResponse } from "../../../Types";
+import { UseCasePaginate, PaginateResponse } from "../../../Types";
 import { MeasuresEntity } from "../Entity/measures.entity";
 import { MeasuresRepository } from "../repositories/measures.repository";
 
-export class SearchMeasures implements GetAllMeasuresUseCase {
+export class SearchMeasures implements UseCasePaginate<MeasuresEntity, PaginateDtos> {
     
     constructor(
         private readonly repository:MeasuresRepository,

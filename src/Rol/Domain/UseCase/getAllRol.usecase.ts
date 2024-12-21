@@ -1,9 +1,9 @@
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { RolEntity, RolRepository } from "../";
-import { GetAllRolUseCase, PaginateResponse } from "../../../Types/Pagination/pagination.type";
+import { UseCasePaginate, PaginateResponse } from "../../../Types";
 
 
-export class GetAllRol implements GetAllRolUseCase {
+export class GetAllRol implements UseCasePaginate<RolEntity, PaginateDtos> {
     
     constructor(
         private readonly repository:RolRepository,

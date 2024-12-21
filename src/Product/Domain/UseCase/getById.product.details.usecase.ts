@@ -1,8 +1,8 @@
-import { GetByIdProductUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { ProductEntity } from "../Entity/product.entity";
 import { ProductRepository } from "../repositories/product.repository";
 
-export class GetByIdProductDetails implements GetByIdProductUseCase {
+export class GetByIdProductDetails implements UseCase<ProductEntity, number> {
     
     constructor(
         private readonly repository:ProductRepository,

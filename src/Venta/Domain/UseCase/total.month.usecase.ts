@@ -1,8 +1,8 @@
-import {  TotalMonthUseCase } from "../../../Types";
+import {  UseCaseDetails } from "../../../Types";
 import { DashboardDtos } from "../dtos/dashboard.dtos";
 import { VentaRepository } from "../repositories/venta.repository";
 
-export class TotalMonth implements TotalMonthUseCase {
+export class TotalMonth implements UseCaseDetails<DashboardDtos[], Date, Date> {
     
     constructor(
         private readonly repository:VentaRepository,

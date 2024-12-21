@@ -1,8 +1,8 @@
-import { DeleteProductUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { ProductRepository } from "../repositories/product.repository";
 
 
-export class DeleteProduct implements DeleteProductUseCase {
+export class DeleteProduct implements UseCase<Boolean, number> {
     
     constructor(
         private readonly repository:ProductRepository,

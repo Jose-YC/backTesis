@@ -1,7 +1,7 @@
-import { UpdateRolUseCase } from "../../../Types/Rol/rol.types";
+import { UseCase } from "../../../Types";
 import { UpdateRolDtos, RolRepository } from "../";
 
-export class UpdateRol implements UpdateRolUseCase {
+export class UpdateRol implements UseCase<Boolean, UpdateRolDtos> {
 
     constructor(
         private readonly repository:RolRepository,

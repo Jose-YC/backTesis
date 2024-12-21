@@ -1,9 +1,9 @@
-import { CreateOrderUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { CreateOrderDtos } from "../dtos/create.order.dtos";
 import { OrderRepository } from "../repositories/order.repository";
 
 
-export class CreateOrder implements CreateOrderUseCase {
+export class CreateOrder implements UseCase<Boolean, CreateOrderDtos> {
     
     constructor(
         private readonly repository:OrderRepository,

@@ -1,10 +1,10 @@
-import { CreateProveedorUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { CreateProveedorDtos } from "../dtos/create.proveedor.dtos";
 import { ProveedorRepository } from "../repositories/proveedor.repository";
 
 
 
-export class CreateProveedor implements CreateProveedorUseCase {
+export class CreateProveedor implements UseCase<Boolean, CreateProveedorDtos> {
     
     constructor(
         private readonly repository:ProveedorRepository,

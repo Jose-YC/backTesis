@@ -1,7 +1,7 @@
 import { UserRepository } from "../";
-import { DeleteUserUseCase } from "../../../Types/User/user.types";
+import { UseCase } from "../../../Types";
 
-export class DeleteUser implements DeleteUserUseCase {
+export class DeleteUser implements UseCase<Boolean, number> {
     
     constructor(
         private readonly repository:UserRepository,

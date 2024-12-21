@@ -1,8 +1,8 @@
 
-import { DeleteCategoryUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { CategoryRepository } from "../repositories/category.repository";
 
-export class DeleteCategory implements DeleteCategoryUseCase {
+export class DeleteCategory implements UseCase<Boolean, number> {
     
     constructor(
         private readonly repository:CategoryRepository,

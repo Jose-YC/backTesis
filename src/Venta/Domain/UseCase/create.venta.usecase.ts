@@ -1,10 +1,10 @@
-import { CreateVentaUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { CreateVentaDtos } from "../dtos/create.venta.dtos";
 import { VentaRepository } from "../repositories/venta.repository";
 
 
 
-export class CreateVenta implements CreateVentaUseCase {
+export class CreateVenta implements UseCase<Boolean, CreateVentaDtos> {
     
     constructor(
         private readonly repository:VentaRepository,

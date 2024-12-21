@@ -1,8 +1,8 @@
-import { GetByIdCategoryUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { CategoryEntity } from "../Entity/category.entity";
 import { CategoryRepository } from "../repositories/category.repository";
 
-export class GetByIdCategory implements GetByIdCategoryUseCase {
+export class GetByIdCategory implements UseCase<CategoryEntity, number> {
     
     constructor(
         private readonly repository:CategoryRepository,

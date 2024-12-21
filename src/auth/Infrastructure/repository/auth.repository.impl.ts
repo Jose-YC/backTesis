@@ -1,5 +1,4 @@
-import { UserResponse } from "../../../Types/Auth/auth.types";
-import { AuthDatasource, AuthRepository, LoginDtos, RegisterDtos } from "../../";
+import { AuthDatasource, AuthEntityDtos, AuthRepository, LoginDtos, RegisterDtos } from "../../";
 
 export class AuthRepositoryImp implements AuthRepository {
 
@@ -7,10 +6,10 @@ export class AuthRepositoryImp implements AuthRepository {
         private readonly datasource:AuthDatasource,
     ){}
 
-    login(login: LoginDtos): Promise<{user: UserResponse, token:string}> {
+    login(login: LoginDtos): Promise<AuthEntityDtos> {
         return this.datasource.login(login);
     }
-    register(register:RegisterDtos): Promise<{user: UserResponse, token:string}> {
+    register(register:RegisterDtos): Promise<AuthEntityDtos> {
         return this.datasource.register(register);
     }
     confirmarEmail(token:string): Promise<Boolean> {

@@ -1,7 +1,7 @@
 
-import { DeleteProveedorUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { ProveedorRepository } from "../repositories/proveedor.repository";
-export class DeleteProveedor implements DeleteProveedorUseCase {
+export class DeleteProveedor implements UseCase<Boolean, number> {
     
     constructor(
         private readonly repository:ProveedorRepository,

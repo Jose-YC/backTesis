@@ -1,9 +1,9 @@
-import { QuantityProductDayUseCase } from "../../../Types";
+import { UseCaseDetails } from "../../../Types";
 import { DashboardDtos } from "../../../Venta/Domain";
 import { VentaItemRepository } from "../repositories/venta.details.repository";
 
 
-export class QuantityProductDay implements QuantityProductDayUseCase {
+export class QuantityProductDay implements UseCaseDetails<DashboardDtos[], Date, Date> {
     
     constructor(
         private readonly repository:VentaItemRepository,

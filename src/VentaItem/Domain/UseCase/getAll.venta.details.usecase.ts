@@ -1,9 +1,9 @@
-import { GetAllVentaItemUseCase, PaginateResponse } from "../../../Types";
+import { UseCasePaginate, PaginateResponse } from "../../../Types";
 import {  VentaItemEntity } from "../Entity/venta.details.entity";
 import { VentaItemRepository } from "../repositories/venta.details.repository";
 
 
-export class GetAllVentaItem implements GetAllVentaItemUseCase {
+export class GetAllVentaItem implements UseCasePaginate<VentaItemEntity, number> {
     
     constructor(
         private readonly repository:VentaItemRepository,

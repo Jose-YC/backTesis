@@ -1,10 +1,10 @@
-import { CreateClientUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { CreateClientDtos } from "../dtos/create.client.dtos";
 import { ClientRepository } from "../repositories/client.repository";
 
 
 
-export class CreateClient implements CreateClientUseCase {
+export class CreateClient implements UseCase<Boolean, CreateClientDtos> {
     
     constructor(
         private readonly repository:ClientRepository,

@@ -1,9 +1,9 @@
-import { GetByIdDetalleProductMeasuresUseCase } from '../../../Types';
+import { UseCaseDetails } from '../../../Types';
 import { DetalleProductMeasuresEntity } from '../Entity/product.measures.entity';
 import { DetalleProductMeasuresRepository } from '../repositories/product.measures.repository';
 
 
-export class GetByIdDetalleProductMeasures implements GetByIdDetalleProductMeasuresUseCase {
+export class GetByIdDetalleProductMeasures implements UseCaseDetails<DetalleProductMeasuresEntity, number, number> {
     
     constructor(
         private readonly repository:DetalleProductMeasuresRepository,

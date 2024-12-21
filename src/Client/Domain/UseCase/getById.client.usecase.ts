@@ -1,8 +1,8 @@
-import { GetByIdClientUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { ClientEntity } from "../Entity/client.entity";
 import { ClientRepository } from "../repositories/client.repository";
 
-export class GetByIdClient implements GetByIdClientUseCase {
+export class GetByIdClient implements UseCase<ClientEntity, string> {
     
     constructor(
         private readonly repository:ClientRepository,

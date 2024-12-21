@@ -1,7 +1,7 @@
 import { UpdateProfileDtos, UserRepository } from "../";
-import { UpdateProfileUseCase } from "../../../Types/User/user.types";
+import { UseCase } from "../../../Types";
 
-export class UpdateProfile implements UpdateProfileUseCase {
+export class UpdateProfile implements UseCase<Boolean, UpdateProfileDtos> {
 
     constructor(
         private readonly repository:UserRepository,

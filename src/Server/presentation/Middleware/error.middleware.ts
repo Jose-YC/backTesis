@@ -20,7 +20,7 @@ export const errorHandlerMiddleware = ( error: Error, req:Request, res:Response,
 }
 
 export const notFoundHandler = ( req: Request, res: Response,  next: NextFunction ) => {
-    const error = CustomError.notfaund('Ruta no encontrada');
+    const error = CustomError.notfaund('No tiene acceso a esta ruta');
     next(error);
 };
 

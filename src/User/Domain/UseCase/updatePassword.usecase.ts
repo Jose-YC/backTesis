@@ -1,8 +1,8 @@
-import { UpdatePasswordUseCase } from '../../../Types/User/user.types';
+import { UseCase } from '../../../Types';
 import { UpdatePasswordDtos } from '../dtos/updatePassword.dtos';
 import { UserRepository } from '../repositories/user.repository';
 
-export class UpdatePassword implements UpdatePasswordUseCase {
+export class UpdatePassword implements UseCase<Boolean, UpdatePasswordDtos> {
 
     constructor(
         private readonly repository:UserRepository,

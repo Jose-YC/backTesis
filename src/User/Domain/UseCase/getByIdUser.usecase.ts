@@ -1,7 +1,7 @@
 import { UserEntity, UserRepository } from "../";
-import { GetByIdUserUseCase } from "../../../Types/User/user.types";
+import { UseCase } from "../../../Types";
 
-export class GetByIdUser implements GetByIdUserUseCase {
+export class GetByIdUser implements UseCase<UserEntity, number> {
     
     constructor(
         private readonly repository:UserRepository,

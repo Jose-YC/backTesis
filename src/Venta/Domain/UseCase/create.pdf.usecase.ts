@@ -1,9 +1,9 @@
-import {  CreateVentaPDFUseCase } from "../../../Types";
+import {  UseCase } from "../../../Types";
 import { VentaRepository } from "../repositories/venta.repository";
 
 
 
-export class CreateVentaPdf implements CreateVentaPDFUseCase{
+export class CreateVentaPdf implements UseCase<PDFKit.PDFDocument, number> {
     
     constructor(
         private readonly repository:VentaRepository,

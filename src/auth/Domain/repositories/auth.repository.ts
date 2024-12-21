@@ -1,10 +1,9 @@
-import { UserResponse } from "../../../Types/Auth/auth.types";
-import { LoginDtos, RegisterDtos } from "../";
+import { AuthEntityDtos, LoginDtos, RegisterDtos } from "../";
 
 export abstract class AuthRepository {
     
-    abstract login(login:LoginDtos):Promise<{user: UserResponse, token:string}>;
-    abstract register(register:RegisterDtos):Promise<{user: UserResponse, token:string}>;
+    abstract login(login:LoginDtos):Promise<AuthEntityDtos>;
+    abstract register(register:RegisterDtos):Promise<AuthEntityDtos>;
     abstract confirmarEmail(token:string):Promise<Boolean>;
     abstract renew(id: number):Promise<String>;
 }

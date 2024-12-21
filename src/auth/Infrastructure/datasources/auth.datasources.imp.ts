@@ -1,9 +1,7 @@
 import { CustomError, prisma } from "../../../Server";
-import { AuthDatasource, RegisterDtos, LoginDtos } from "../../Domain";
+import { AuthDatasource, RegisterDtos, LoginDtos, AuthEntityDtos } from "../../Domain";
 import { EmailService } from '../../../Service/email/email.services';
 import { bcryptjsAdapter, envs, jwtAdapter } from "../../../config";
-import { UserResponse } from "../../../Types/Auth/auth.types";
-
 
 export class AuthDatasourcesImp implements AuthDatasource {
 
@@ -22,7 +20,7 @@ export class AuthDatasourcesImp implements AuthDatasource {
         return send
     }
 
-    async login(login: LoginDtos): Promise<{user: UserResponse, token:string}> {
+    async login(login: LoginDtos): Promise<AuthEntityDtos> {
         const user = await prisma.user.findFirst({where:{email:login.email}});
         if (!user) throw CustomError.badRequest('Usuario o contraseña incorrectos');
 
@@ -32,21 +30,10 @@ export class AuthDatasourcesImp implements AuthDatasource {
         const token = await jwtAdapter.generatetJWT<string>({id: user.id});
         if (!token) throw CustomError.internalServer('Error al crear token');
 
-        return {
-                user:{
-                        id: user.id, 
-                        email:user.email,
-                        name:user.name,
-                        lastname:user.lastname,
-                        phone:user.phone,
-                        emailVeri:user.emailVeri,
-                        rolName:user.rolName,
-                    }, 
-                token
-        };
+        return AuthEntityDtos.fromObject({user, token});
     }
 
-    async register(register:RegisterDtos): Promise<{user: UserResponse, token:string}> {
+    async register(register:RegisterDtos): Promise<AuthEntityDtos> {
         const userVeri = await prisma.user.findFirst({where: { email: register.email }});
         if (userVeri) throw CustomError.badRequest('El usuario ya existe');
         
@@ -61,19 +48,7 @@ export class AuthDatasourcesImp implements AuthDatasource {
         const send = await this.Emaillink(register.email);
         if (!send) { throw CustomError.internalServer('Error al enviar el correo electrónico')};
 
-        return {
-            user:{
-                    id: user.id, 
-                    email:user.email,
-                    name:user.name,
-                    lastname:user.lastname,
-                    phone:user.phone,
-                    emailVeri:user.emailVeri,
-                    rolName:user.rolName,
-                }, 
-            token
-        };
-
+        return AuthEntityDtos.fromObject({user, token});
     }
 
     async confirmarEmail(token:string): Promise<Boolean> {
@@ -88,13 +63,10 @@ export class AuthDatasourcesImp implements AuthDatasource {
 
         return true;
     }
+
     async renew(id: number): Promise<String> {
         const token = await jwtAdapter.generatetJWT<string>({id});
         if (!token) throw CustomError.internalServer('Falla en la creacion de token');
         return token;
     }
-
-    
-
-
 }

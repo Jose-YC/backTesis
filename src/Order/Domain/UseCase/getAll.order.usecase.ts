@@ -1,9 +1,9 @@
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
-import { GetAllOrderUseCase, PaginateResponse } from "../../../Types";
+import { UseCasePaginate, PaginateResponse } from "../../../Types";
 import { OrderEntity } from "../Entity/order.entity";
 import { OrderRepository } from "../repositories/order.repository";
 
-export class GetAllOrder implements GetAllOrderUseCase {
+export class GetAllOrder implements UseCasePaginate<OrderEntity, PaginateDtos> {
     
     constructor(
         private readonly repository:OrderRepository,

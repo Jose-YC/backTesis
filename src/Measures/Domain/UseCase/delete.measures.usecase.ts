@@ -1,9 +1,9 @@
-import { DeleteMeasuresUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { MeasuresRepository } from "../repositories/measures.repository";
 
 
 
-export class DeleteMeasures implements DeleteMeasuresUseCase {
+export class DeleteMeasures implements UseCase<Boolean, number> {
     
     constructor(
         private readonly repository:MeasuresRepository,

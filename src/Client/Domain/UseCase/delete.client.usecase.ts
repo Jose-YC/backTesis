@@ -1,8 +1,8 @@
 
-import { DeleteClientUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { ClientRepository } from "../repositories/client.repository";
 
-export class DeleteClient implements DeleteClientUseCase {
+export class DeleteClient implements UseCase<Boolean, string> {
     
     constructor(
         private readonly repository:ClientRepository,

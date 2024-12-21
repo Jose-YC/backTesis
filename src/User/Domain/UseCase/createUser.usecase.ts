@@ -1,7 +1,7 @@
 import { CreateUserDtos, UserRepository } from "../";
-import { CreateUserUseCase } from "../../../Types/User/user.types";
+import { UseCase } from "../../../Types";
 
-export class CreateUser implements CreateUserUseCase {
+export class CreateUser implements UseCase<Boolean, CreateUserDtos> {
     
     constructor(
         private readonly repository:UserRepository,

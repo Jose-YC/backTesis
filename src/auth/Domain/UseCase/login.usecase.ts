@@ -1,12 +1,12 @@
-import { LoginUseCase, UserResponse } from "../../../Types/Auth/auth.types";
-import { LoginDtos, AuthRepository } from "../";
+import { UseCase } from "../../../Types";
+import { LoginDtos, AuthRepository, AuthEntityDtos } from "../";
 
-export class Login implements LoginUseCase {
+export class Login implements UseCase<AuthEntityDtos, LoginDtos> {
     
     constructor(
         private readonly repository:AuthRepository,
     ){}
-    execute(dto: LoginDtos): Promise<{user: UserResponse, token:string}> {
+    execute(dto: LoginDtos): Promise<AuthEntityDtos> {
         return this.repository.login(dto);
     }
     

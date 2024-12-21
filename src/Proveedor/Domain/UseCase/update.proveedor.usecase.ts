@@ -1,8 +1,8 @@
-import { UpdateProveedorUseCase } from "../../../Types";
+import { UseCase } from "../../../Types";
 import { UpdateProveedorDtos } from "../dtos/update.proveedor.dtos";
 import { ProveedorRepository } from "../repositories/proveedor.repository";
 
-export class UpdateProveedor implements UpdateProveedorUseCase {
+export class UpdateProveedor implements UseCase<Boolean, UpdateProveedorDtos> {
 
     constructor(
         private readonly repository:ProveedorRepository,
