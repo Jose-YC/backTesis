@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UserRepository } from "../../../User";
 import { jwtAdapter } from "../../../config";
+import { CustomError } from "../../../Server";
 
 
 export class AuthMiddleware {
@@ -11,21 +12,20 @@ export class AuthMiddleware {
 
     public validateJWT = async (req:Request, res:Response, next:NextFunction) =>{
         const token = req.header('x-token');
-        if (!token) return res.status(401).json({Status:false, message: 'No token provided'});
-        
+        if (!token) return next(CustomError.unAuthorized('No se proporciona ningún token'));
         try {
             const payload = await jwtAdapter.validatetetJWT<{id:number}>(token);
-            if (!payload) return res.status(401).json({Status:false, message: 'Invalid token'});
-
+            if (!payload) return next(CustomError.unAuthorized('Token invalido'));
+            
             const resp = await this.userRepository.getId(payload.id)
-            if (!resp) return res.status(401).json({Status:false, message: 'Invalid token'});
+            if (!resp) return next(CustomError.unAuthorized('Token invalido'));
 
            req.body.user =resp;
 
            next();
             
         } catch (error) {
-            res.status(500).json({Status:false, message: 'Internarl server error'})
+            return next(CustomError.internalServer('Error en el servidor'));
         }
 
     }
@@ -33,10 +33,9 @@ export class AuthMiddleware {
     public validateRol (...roles: string[]){
         return (req:Request, res:Response, next:NextFunction) => {
         
-            if ( !req.body.user ) return res.json({Status:false, message: 'Error token'});
+            if ( !req.body.user ) return next(CustomError.unAuthorized('Token invalido'));
 
-            if ( !roles.includes( req.body.user.rolName ) ) return res.json({Status:false, message: 'Falta de permisos'});
-            
+            if ( !roles.includes( req.body.user.rolName ) ) return next(CustomError.unAuthorized('Falta de Permisos'));
             next();
         }
     }

@@ -2,6 +2,7 @@ import express, { Router } from 'express';
 import cors  from 'cors';
 import fileUpload from 'express-fileupload';
 import path from 'path';
+import { errorHandlerMiddleware, notFoundHandler } from './Middleware/error.middleware';
 
 interface Options {
     port: number,
@@ -27,12 +28,14 @@ export class Server {
         this.app.use(cors());
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended:true}));
-        this.app.use(express.static(path.join(__dirname, this.publicPath)));
+        this.app.use(express.static(path.join(__dirname, '../', '../', '../', this.publicPath)));
         this.app.use(fileUpload({
             useTempFiles : true,
             tempFileDir : '/tmp/'
         }));
         this.app.use(this.routes);
+        this.app.use(notFoundHandler);
+        this.app.use(errorHandlerMiddleware);
 
         this.app.listen(this.port, ()=>{
             console.log("corriendooooooooooooo")

@@ -12,11 +12,11 @@ export const errorHandler = (err: Error, res: Response) => {
     }
 
 
-    console.error('Unhandled Error:', err);
+    console.error('Error no controlado:', err);
 
 
     res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
         Status: false,
-        message: 'Something went wrong'
+        message: 'Error en el servidor'
     });
 };
