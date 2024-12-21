@@ -11,18 +11,32 @@ export class DetalleProductCategoryRoutes {
         const router = Router();
         // controlador
         const datasource = new DetalleProductCategoryDatasourcesImp();
-        const categoryRepository = new DetalleProductCategoryRepositoryImp(datasource)
-        const categoryController= new DetalleProductCategoryController(categoryRepository);
+        const productRepository = new DetalleProductCategoryRepositoryImp(datasource)
+        const productController= new DetalleProductCategoryController(productRepository);
         // middleware
         const userDatasource = new UserDatasourcesImp();
         const userRepository = new UserRepositoryImp(userDatasource);
         const authMiddleware = new AuthMiddleware(userRepository);   
         
-        router.get('/', authMiddleware.validateJWT, categoryController.getDetalleProductCategory);
-        router.get('/search/:product_id/:category_id', authMiddleware.validateJWT, categoryController.getIdDetalleProductCategory);
+        router.get('/', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], productController.getDetalleProductCategory);
 
-        router.post('/create', authMiddleware.validateJWT, categoryController.postDetalleProductCategory);
-        router.delete('/delete/:product_id/:category_id', authMiddleware.validateJWT, categoryController.deleteDetalleProductCategory);
+        router.get('/search/:product_id/:category_id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], productController.getIdDetalleProductCategory);
+
+        router.post('/create', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], productController.postDetalleProductCategory);
+
+        router.delete('/delete/:product_id/:category_id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], productController.deleteDetalleProductCategory);
         
         return router;
     }

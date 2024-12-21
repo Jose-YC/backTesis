@@ -19,13 +19,35 @@ export class RolRoutes {
         const userRepository = new UserRepositoryImp(userDatasource);
         const authMiddleware = new AuthMiddleware(userRepository);   
 
-        router.get('/', authMiddleware.validateJWT, rolController.getRol);
-        router.get('/:search', authMiddleware.validateJWT, rolController.getSearchRol);
-        router.get('/search/:id', authMiddleware.validateJWT, rolController.getIdRol);
+        router.get('/', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], rolController.getRol);
 
-        router.post('/create', authMiddleware.validateJWT, rolController.postRol);
-        router.put('/update/:id', authMiddleware.validateJWT, rolController.putRol);
-        router.delete('/delete/:id', authMiddleware.validateJWT, rolController.deleteRol);
+        router.get('/:search', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], rolController.getSearchRol);
+
+        router.get('/search/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], rolController.getIdRol);
+
+        router.post('/create', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], rolController.postRol);
+
+        router.put('/update/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], rolController.putRol);
+
+        router.delete('/delete/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], rolController.deleteRol);
         
         return router;
     }

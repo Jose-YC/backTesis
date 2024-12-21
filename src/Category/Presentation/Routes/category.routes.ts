@@ -18,14 +18,40 @@ export class CategoryRoutes {
         const userRepository = new UserRepositoryImp(userDatasource);
         const authMiddleware = new AuthMiddleware(userRepository);
         
-        router.get('/', authMiddleware.validateJWT,categoryController.getCategory);
-        router.get('/children', authMiddleware.validateJWT,categoryController.getChildrenCategory);
-        router.get('/:search', authMiddleware.validateJWT, categoryController.getSearchCategory);
-        router.get('/search/:id', authMiddleware.validateJWT, categoryController.getIdCategory);
+        router.get('/', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen'])
+        ],  categoryController.getCategory);
 
-        router.post('/create', authMiddleware.validateJWT, categoryController.postCategory);
-        router.put('/update/:id', authMiddleware.validateJWT, categoryController.putCategory);
-        router.delete('/delete/:id', authMiddleware.validateJWT, categoryController.deleteCategory);
+        router.get('/children', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen'])
+        ], categoryController.getChildrenCategory);
+
+        router.get('/:search', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen'])
+        ], categoryController.getSearchCategory);
+
+        router.get('/search/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen'])
+        ], categoryController.getIdCategory);
+
+        router.post('/create', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen'])
+        ], categoryController.postCategory);
+
+        router.put('/update/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen'])
+        ], categoryController.putCategory);
+
+        router.delete('/delete/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen'])
+        ], categoryController.deleteCategory);
         
         return router;
     }

@@ -18,12 +18,30 @@ export class    DetalleProductMeasuresRoutes {
         const userRepository = new UserRepositoryImp(userDatasource);
         const authMiddleware = new AuthMiddleware(userRepository);   
         
-        router.get('/search/:product_id/:measures_id', authMiddleware.validateJWT, productController.getIdDetalleProductMeasures);
+        router.get('/search/:product_id/:measures_id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], productController.getIdDetalleProductMeasures);
         
-        router.post('/create/:product_id', authMiddleware.validateJWT, productController.postDetalleProductMeasures);
-        router.put('/update/:product_id/:measures_id', authMiddleware.validateJWT, productController.putDetalleProductMeasures);
-        router.put('/stock/increment/:product_id/:measures_id', authMiddleware.validateJWT, productController.putIncrementProductMeasures);
-        router.put('/stock/decrement/:product_id/:measures_id', authMiddleware.validateJWT, productController.putDecrementProductMeasures);
+        router.post('/create/:product_id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], productController.postDetalleProductMeasures);
+
+        router.put('/update/:product_id/:measures_id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], productController.putDetalleProductMeasures);
+
+        router.put('/stock/increment/:product_id/:measures_id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen'])
+        ], productController.putIncrementProductMeasures);
+
+        router.put('/stock/decrement/:product_id/:measures_id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen'])
+        ], productController.putDecrementProductMeasures);
         
         return router;
     }

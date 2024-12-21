@@ -11,21 +11,21 @@ export class AuthMiddleware {
 
     public validateJWT = async (req:Request, res:Response, next:NextFunction) =>{
         const token = req.header('x-token');
-        if (!token) return res.status(401).json({message: 'No token provided'});
+        if (!token) return res.status(401).json({Status:false, message: 'No token provided'});
         
         try {
             const payload = await jwtAdapter.validatetetJWT<{id:number}>(token);
-            if (!payload) return res.status(401).json({message: 'Invalid token'});
+            if (!payload) return res.status(401).json({Status:false, message: 'Invalid token'});
 
             const resp = await this.userRepository.getId(payload.id)
-            if (!resp) return res.status(401).json({message: 'Invalid token - user'});
+            if (!resp) return res.status(401).json({Status:false, message: 'Invalid token'});
 
            req.body.user =resp;
 
            next();
             
         } catch (error) {
-            res.status(500).json({message: 'Internarl server error'})
+            res.status(500).json({Status:false, message: 'Internarl server error'})
         }
 
     }
@@ -33,9 +33,9 @@ export class AuthMiddleware {
     public validateRol (...roles: string[]){
         return (req:Request, res:Response, next:NextFunction) => {
         
-            if ( !req.body.user ) return res.status(500).json({message: 'Error token'});
-    
-            if ( !roles.includes( req.body.user.rol ) ) return res.status(401).json({message: 'Lack of permissions'});
+            if ( !req.body.user ) return res.json({Status:false, message: 'Error token'});
+
+            if ( !roles.includes( req.body.user.rolName ) ) return res.json({Status:false, message: 'Falta de permisos'});
             
             next();
         }

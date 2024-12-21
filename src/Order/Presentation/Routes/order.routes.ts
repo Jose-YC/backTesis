@@ -23,14 +23,40 @@ export class OrderRoutes {
         const userRepository = new UserRepositoryImp(userDatasource);
         const authMiddleware = new AuthMiddleware(userRepository);   
         
-        router.get('/', authMiddleware.validateJWT, ordenController.getOrder);
-        router.get('/:search', authMiddleware.validateJWT, ordenController.getSearchOrder);
-        router.get('/search/:id', authMiddleware.validateJWT, ordenController.getIdOrder);
-        router.get('/pdf/:id', authMiddleware.validateJWT, ordenController.getPdf);
-        router.get('/details/search/:id', authMiddleware.validateJWT, ordenController.getIdOrderDetails);
+        router.get('/', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'asistente almacen', 'jefe almacen'])
+        ], ordenController.getOrder);
 
-        router.post('/create', authMiddleware.validateJWT, ordenController.postOrder);
-        router.put('/update/:id', authMiddleware.validateJWT, ordenController.putOrder);
+        router.get('/:search', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'asistente almacen', 'jefe almacen'])
+        ], ordenController.getSearchOrder);
+
+        router.get('/search/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'asistente almacen', 'jefe almacen'])
+        ], ordenController.getIdOrder);
+
+        router.get('/pdf/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'asistente almacen', 'jefe almacen'])
+        ], ordenController.getPdf);
+
+        router.get('/details/search/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'asistente almacen', 'jefe almacen'])
+        ], ordenController.getIdOrderDetails);
+
+        router.post('/create', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen'])
+        ], ordenController.postOrder);
+
+        router.put('/update/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen'])
+        ], ordenController.putOrder);
         
         return router;
     }

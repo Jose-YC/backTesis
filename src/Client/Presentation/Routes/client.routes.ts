@@ -18,13 +18,30 @@ export class ClientRoutes {
         const userRepository = new UserRepositoryImp(userDatasource);
         const authMiddleware = new AuthMiddleware(userRepository);
         
-        router.get('/', authMiddleware.validateJWT,clientController.getClient);
-        router.get('/:search', authMiddleware.validateJWT, clientController.getSearchClient);
+        router.get('/', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'vendedor', 'gerente'])
+        ], clientController.getClient);
+        router.get('/:search', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'vendedor', 'gerente'])
+        ], clientController.getSearchClient);
         router.get('/search/:dni', authMiddleware.validateJWT, clientController.getIdClient);
 
-        router.post('/create', authMiddleware.validateJWT, clientController.postClient);
-        router.put('/update/:dni', authMiddleware.validateJWT, clientController.putClient);
-        router.delete('/delete/:dni', authMiddleware.validateJWT, clientController.deleteClient);
+        router.post('/create', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'vendedor', 'gerente'])
+        ], clientController.postClient);
+
+        router.put('/update/:dni', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'gerente'])
+        ], clientController.putClient);
+
+        router.delete('/delete/:dni', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'gerente'])
+        ], clientController.deleteClient);
         
         return router;
     }

@@ -18,7 +18,10 @@ export class OrderItemRoutes {
         const userRepository = new UserRepositoryImp(userDatasource);
         const authMiddleware = new AuthMiddleware(userRepository);   
 
-        router.get('/:id', authMiddleware.validateJWT, orderItemController.getOrderItem);
+        router.get('/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'asistente almacen', 'jefe almacen'])
+        ], orderItemController.getOrderItem);
         
         return router;
     }

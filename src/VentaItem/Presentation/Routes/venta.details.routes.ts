@@ -18,12 +18,30 @@ export class VentaItemRoutes {
         const userRepository = new UserRepositoryImp(userDatasource);
         const authMiddleware = new AuthMiddleware(userRepository);   
 
-        router.get('/:id', authMiddleware.validateJWT, orderItemController.getVentaItem);
+        router.get('/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'vendedor', 'jefe ventas', 'gerente'])
+        ], orderItemController.getVentaItem);
         
-        router.post('/category', authMiddleware.validateJWT, orderItemController.getCategoryMonth);
-        router.post('/top', authMiddleware.validateJWT, orderItemController.getProductTop);
-        router.post('/product/sale', authMiddleware.validateJWT, orderItemController.getProductSale);
-        router.post('/quantity', authMiddleware.validateJWT, orderItemController.getQuantityProductDay);
+        router.post('/category', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'gerente'])
+        ], orderItemController.getCategoryMonth);
+
+        router.post('/top', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'gerente'])
+        ], orderItemController.getProductTop);
+
+        router.post('/product/sale', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'gerente'])
+        ], orderItemController.getProductSale);
+
+        router.post('/quantity', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'gerente'])
+        ], orderItemController.getQuantityProductDay);
         
         return router;
     }

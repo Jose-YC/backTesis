@@ -17,13 +17,35 @@ export class ProveedorRoutes {
         const userRepository = new UserRepositoryImp(userDatasource);
         const authMiddleware = new AuthMiddleware(userRepository);   
 
-        router.get('/', authMiddleware.validateJWT, proveedorController.getProveedor);
-        router.get('/:search', authMiddleware.validateJWT, proveedorController.getSearchProveedor);
-        router.get('/search/:id', authMiddleware.validateJWT, proveedorController.getIdProveedor);
+        router.get('/', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], proveedorController.getProveedor);
 
-        router.post('/create', authMiddleware.validateJWT, proveedorController.postProveedor);
-        router.put('/update/:id', authMiddleware.validateJWT, proveedorController.putProveedor);
-        router.delete('/delete/:id', authMiddleware.validateJWT, proveedorController.deleteProveedor);
+        router.get('/:search', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], proveedorController.getSearchProveedor);
+
+        router.get('/search/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], proveedorController.getIdProveedor);
+
+        router.post('/create', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], proveedorController.postProveedor);
+
+        router.put('/update/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'jefe almacen', 'gerente'])
+        ], proveedorController.putProveedor);
+
+        router.delete('/delete/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin', 'gerente'])
+        ], proveedorController.deleteProveedor);
         
         return router;
     }

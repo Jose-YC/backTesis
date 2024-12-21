@@ -13,15 +13,39 @@ export class UserRoutes {
         // middleware
         const authMiddleware = new AuthMiddleware(userRepository);   
 
-        router.get('/', authMiddleware.validateJWT, userController.getUser);
-        router.get('/:search', authMiddleware.validateJWT, userController.getSearchUser);
-        router.get('/search/:id', authMiddleware.validateJWT, userController.getIdUser);
+        router.get('/', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], userController.getUser);
 
+        router.get('/:search', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], userController.getSearchUser);
+
+        router.get('/search/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], userController.getIdUser);
+
+        
+        router.post('/create', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], userController.postUser);
+        
+        router.put('/update/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], userController.putUser);
+        
+        router.delete('/delete/:id', [
+            authMiddleware.validateJWT, 
+            authMiddleware.validateRol(...['admin'])
+        ], userController.deleteUser);
+        
         router.put('/profile/:id', authMiddleware.validateJWT, userController.putProfile);
         router.put('/password/:id', authMiddleware.validateJWT, userController.putUserPassword);
-        router.post('/create', authMiddleware.validateJWT, userController.postUser);
-        router.put('/update/:id', authMiddleware.validateJWT, userController.putUser);
-        router.delete('/delete/:id', authMiddleware.validateJWT, userController.deleteUser);
         
         return router;
     }
