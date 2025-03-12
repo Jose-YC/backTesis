@@ -1,6 +1,4 @@
 
-import { CustomError } from "../../../Server";
-
 export class CreateCategoryDtos {
 
     private constructor(

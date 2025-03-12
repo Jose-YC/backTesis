@@ -1,5 +1,3 @@
-import { CustomError } from "../../../Server";
-
 export class CreateVentaItemDtos {
 
     private constructor(

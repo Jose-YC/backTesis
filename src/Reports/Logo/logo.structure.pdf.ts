@@ -3,9 +3,10 @@ import { ContentImage } from "pdfmake/interfaces";
 
 
 export const LogoStructure = (url: string): ContentImage => {
-    const fullPath = path.join(process.cwd(), 'public', 'img', url);
+    const publicPath = path.join(__dirname, 'public');
+    const filePath = path.join(publicPath, '/img/', url);
     return {
-            image: fullPath,
+            image: filePath,
             alignment: 'center',
             width: 100,
             height: 100,

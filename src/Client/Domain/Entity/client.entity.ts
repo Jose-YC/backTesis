@@ -5,12 +5,12 @@ import { CustomError } from "../../../Server";
 export class ClientEntity {
 
     constructor(
-        public  num_doc:string,
-        public  type:ClientType,
-        public  name:string,
-        public  email?:string,
-        public  phone?:string,
-        public  address?:string,
+        public num_doc:string,
+        public type:ClientType,
+        public name:string,
+        public email?:string,
+        public phone?:string,
+        public address?:string,
     ){}
 
     static fromObject= (object:{[key:string]:any} ):ClientEntity => {

@@ -1,14 +1,11 @@
 
+import { Prisma, PrismaClient } from "@prisma/client";
 import { CustomError, prisma } from "../../../Server";
-import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
-import { PaginateResponse } from "../../../Types/Pagination/pagination.type";
-import { StockItemsProductDtos } from "../../Domain";
-import { DetalleProductMeasuresDatasource } from "../../Domain/datasource/product.measures.datasource";
-import { CreateDetalleProductMeasuresDtos } from "../../Domain/dtos/create.product.measures.dtos";
-import { DetalleProductMeasuresEntityDtos } from "../../Domain/dtos/product.measures.entyti.dtos";
-import { UpdateDetalleProductMeasuresDtos } from "../../Domain/dtos/update.product.measures.dtos";
-import { DetalleProductMeasuresEntity } from "../../Domain/Entity/product.measures.entity";
-
+import { StockItemsProductDtos, DetalleProductMeasuresDatasource, 
+         CreateDetalleProductMeasuresDtos, DetalleProductMeasuresEntityDtos, 
+         UpdateDetalleProductMeasuresDtos, DetalleProductMeasuresEntity
+       } from "../../Domain";
+import { DefaultArgs } from "@prisma/client/runtime/library";
 
 export class DetalleProductMeasuresDatasourcesImp implements DetalleProductMeasuresDatasource {
 
@@ -41,8 +38,15 @@ export class DetalleProductMeasuresDatasourcesImp implements DetalleProductMeasu
         return !!detalleProductMeasures;
     }
 
-    async incrementStock(productStock: StockItemsProductDtos): Promise<Boolean> {
-        const product = await prisma.itemsMeasures.update({
+    async incrementStock(
+        productStock: StockItemsProductDtos,
+        clientprisma: Omit<
+        PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>, 
+        "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | 
+        "$extends"> 
+        | PrismaClient  = prisma): Promise<Boolean> {
+
+        const product = await clientprisma.itemsMeasures.update({
             where: { 
                 items_id : {
                     measures_id: productStock.measures_id,
@@ -54,15 +58,21 @@ export class DetalleProductMeasuresDatasourcesImp implements DetalleProductMeasu
         return !!product;
     }
 
-    async decrementStock(productStock: StockItemsProductDtos): Promise<Boolean> {
+    async decrementStock(
+        productStock: StockItemsProductDtos, 
+        clientprisma: Omit<
+        PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>, 
+        "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | 
+        "$extends"> 
+        | PrismaClient = prisma ): Promise<Boolean> {
 
-        const veri = await prisma.itemsMeasures.findFirst({ where: { product_id: productStock.product_id,  measures_id: productStock.measures_id } });
+        const veri = await clientprisma.itemsMeasures.findFirst({ where: { product_id: productStock.product_id,  measures_id: productStock.measures_id } });
 
-        if (!veri) throw `product not found`;
-        if ( productStock.stock > veri.stock) throw `Stock insuficiente`;
+        if (!veri) throw CustomError.badRequest('Producto no encontrado');
+        if ( productStock.stock > veri.stock) throw CustomError.badRequest('Stock insuficiente');
 
 
-        const product = await prisma.itemsMeasures.update({
+        const product = await clientprisma.itemsMeasures.update({
             where: { 
                 items_id : {
                     product_id: productStock.product_id, 
@@ -77,17 +87,9 @@ export class DetalleProductMeasuresDatasourcesImp implements DetalleProductMeasu
 
     async ValidateProduct(ids: number[]): Promise<DetalleProductMeasuresEntityDtos[]> {
         ids = Array.from(new Set(ids));
-
-        const products = await prisma.itemsMeasures.findMany({
-            where: {
-              id: {
-                in: ids
-              }
-            }, 
-        });
-
-        if (products.length !== ids.length) throw `Some Product were not found`;
-
+        const products = await prisma.itemsMeasures.findMany({ where: { id: {in: ids} }});
+        if (products.length !== ids.length) throw CustomError.badRequest('Algunos productos no fueron encontrados');
+        
         return products.map((measure) => DetalleProductMeasuresEntityDtos.fromObject(measure));
     }
 

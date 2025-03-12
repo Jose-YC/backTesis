@@ -1,13 +1,7 @@
-import e, { Request, Response } from "express";
+import { Request, Response } from "express";
 import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
-import { CreateVenta, CreateVentaDtos, 
-         GetAllVenta, GetByIdVenta, VentaRepository, 
-         SearchVenta, 
-         TotalMonth,
-         TotalDay,
-         QuantitySaleDay,
-         CreateVentaPdf} from "../../Domain";
-import { GetByIdVentaDetails } from "../../Domain/UseCase/getByIdDetails.venta.usecase";
+import { CreateVenta, CreateVentaDtos,  GetAllVenta, GetByIdVenta, VentaRepository, 
+         SearchVenta, TotalMonth, TotalDay, QuantitySaleDay, GetByIdVentaDetails, CreateVentaPdf} from "../../Domain";
 import { errorHandler } from "../../../Server";
 
 export class VentaController {

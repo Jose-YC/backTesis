@@ -14,11 +14,12 @@ export class DetalleProductMeasuresEntityDtos {
 
     static fromObject= (object:{[key:string]:any} ):DetalleProductMeasuresEntityDtos => {
         const { id, measures_id, stock, product_id, price, income } = object;
-        if (!id || isNaN(Number(id))) {throw CustomError.badRequest('Id must be a valid number')}
-        if (!measures_id || isNaN(Number(measures_id))) {throw CustomError.badRequest('Id measure must be a valid number')}
-        if (product_id && isNaN(Number(product_id))) {throw CustomError.badRequest('Id product must be a valid number')}
-        if (!stock || isNaN(Number(stock))) {throw CustomError.badRequest('value must be a valid number')}
-        if (!price || isNaN(Number(price))) {throw CustomError.badRequest('price must be a valid number')}
+        console.log(object);
+        if (isNaN(Number(id))) {throw CustomError.badRequest('El identificador debe ser un número válido')}
+        if (isNaN(Number(measures_id))) {throw CustomError.badRequest('El identificador de la medida debe ser un número válido')}
+        if (isNaN(Number(product_id))) {throw CustomError.badRequest('El identificador del producto debe ser un número válido')}
+        if (isNaN(Number(stock))) {throw CustomError.badRequest('El stock debe ser un número válido')}
+        if (isNaN(Number(price))) {throw CustomError.badRequest('El precio debe ser un número válido')}
         return new DetalleProductMeasuresEntityDtos( id, measures_id, product_id, stock, price, income );
     }
 }

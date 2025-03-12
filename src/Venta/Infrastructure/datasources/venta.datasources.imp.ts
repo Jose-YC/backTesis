@@ -6,8 +6,6 @@ import { PaginateDtos } from "../../../shared/domain/dto/pagination.dtos";
 import { PaginateResponse } from "../../../Types";
 import { CreateVentaDtos, DashboardDtos, VentaDatasource, VentaEntity, VentaEntityDtos } from "../../Domain";
 
-
-
 export class VentaDatasourcesImp implements VentaDatasource {
 
     constructor(
@@ -16,8 +14,10 @@ export class VentaDatasourcesImp implements VentaDatasource {
     ){}
 
     async create(createVenta: CreateVentaDtos): Promise<Boolean> {
-        const products = await this.productRepository.ValidateProduct(createVenta.itemsVenta.map(object => object.id));
         
+        const products = await this.productRepository.ValidateProduct(createVenta.itemsVenta.map(object => object.id));
+        console.log("pasa")
+
         const itemsInVenta  = createVenta.itemsVenta.reduce((acc, ventaItem) => {
             return acc + (ventaItem.quantity);
         }, 0);
@@ -30,29 +30,40 @@ export class VentaDatasourcesImp implements VentaDatasource {
         const tax = 0.18 * subTotal
 
         const total = subTotal + tax
-        
-        const sale = await prisma.venta.create({
-            data: {
-                subTotal,
-                total,
-                itemsInVenta,
-                tax,
-                type: createVenta!.type,
-                type_payment: createVenta!.type_payment,
-                ...(createVenta!.type === 'BOLETA' || createVenta!.type === 'FACTURA' 
-                    ? { client_id: createVenta!.client_id } 
-                    : {}),
-                ventaItem: {createMany:{ data : createVenta!.itemsVenta.map(object => ({
-                    mesures_id: products.find(product => product.id === object.id)!.measures_id,
-                    product_id: products.find(product => product.id === object.id)!.product_id,
-                    price: products.find(product => product.id === object.id)!.price,
-                    income: products.find(product => product.id === object.id)!.income,
-                    quantity: object.quantity
-                }))}},    
-            }
-        });
 
-        return !!sale;
+        
+        return await prisma.$transaction(async (tx) => {
+
+            await Promise.all(
+                products.map(element => this.productRepository.decrementStock({
+                    measures_id: element.measures_id, 
+                    product_id: element.product_id, 
+                    stock: createVenta!.itemsVenta.find(product => product.id === element.id)!.quantity,
+                }, tx))
+            );
+            const sale = await tx.venta.create({
+                data: {
+                    subTotal,
+                    total,
+                    itemsInVenta,
+                    tax,
+                    type: createVenta!.type,
+                    type_payment: createVenta!.type_payment,
+                    ...(createVenta!.type === 'BOLETA' || createVenta!.type === 'FACTURA' 
+                        ? { client_id: createVenta!.client_id } 
+                        : {}),
+                    ventaItem: {createMany:{ data : createVenta!.itemsVenta.map(object => ({
+                        mesures_id: products.find(product => product.id === object.id)!.measures_id,
+                        product_id: products.find(product => product.id === object.id)!.product_id,
+                        price: products.find(product => product.id === object.id)!.price,
+                        income: products.find(product => product.id === object.id)!.income,
+                        quantity: object.quantity
+                    }))}},    
+                }
+            });
+
+            return !!sale
+        });
     }
     async getAll(dtos:PaginateDtos): Promise<PaginateResponse<VentaEntity>> {
         const skip = (dtos.page - 1) * dtos.lim;
@@ -111,15 +122,12 @@ export class VentaDatasourcesImp implements VentaDatasource {
         if (!sale) throw CustomError.badRequest('Venta no encontrada');
         return VentaEntityDtos.fromObject(sale);
     }
-
     async getPdf(id: number): Promise<PDFKit.PDFDocument> {
         const sale = await this.getIdDetails(id)
         const pdfDoc = VentaStructure(sale)
         const pdf = this.printer.generated(pdfDoc);
         return pdf;
-     }
-
-
+    }
     async getTotalMonth(startDate: Date, endDate: Date): Promise<DashboardDtos[]> {
         if (startDate >= endDate) throw ('Start date must be before end date');
         
